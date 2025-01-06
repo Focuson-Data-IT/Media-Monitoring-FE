@@ -1,11 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: {
-    output: string;
-    images: { unoptimized: boolean };
-    assetPrefix: string;
-    basePath: string;
-    reactStrictMode: boolean
+    output?: string;
+    images?: { unoptimized?: boolean };
+    assetPrefix?: string;
+    basePath?: string;
+    reactStrictMode?: boolean
 } = {
     reactStrictMode: false,
     images: {
