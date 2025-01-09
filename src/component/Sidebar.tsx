@@ -225,27 +225,6 @@ const Sidebar = () => {
 											<ul
 												className="sub-menu min-w-[200px] rounded-lg border-l border-success-100 bg-white px-5 py-2 shadow-lg"
 											>
-												<li>
-													<a
-														href="analytics.html"
-														className="text-md inline-block py-1.5 font-medium text-bgray-600 hover:text-bgray-800"
-													>Analytics</a
-													>
-												</li>
-												<li>
-													<a
-														href="messages.html"
-														className="text-md inline-block py-1.5 font-medium text-bgray-600 hover:text-bgray-800"
-													>Inbox</a
-													>
-												</li>
-												<li>
-													<a
-														href="integrations.html"
-														className="text-md inline-block py-1.5 font-medium text-bgray-600 hover:text-bgray-800"
-													>Integrations</a
-													>
-												</li>
 											</ul>
 										</li>
 										<li className="item px-[43px] py-[11px]">
