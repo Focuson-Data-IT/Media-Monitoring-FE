@@ -1,14 +1,14 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Chart from "chart.js/auto";
 import moment from "moment";
 import OurDatePicker from "@/component/OurDatePicker";
 import OurSelect from "@/component/OurSelect";
 
 const FairScoreChart = () => {
-	// const chartRef = useRef<HTMLCanvasElement | null>(null);
-	let chartRef: HTMLCanvasElement | null = null
+	const chartRef = useRef<HTMLCanvasElement | null>(null);
+	// let chartRef: HTMLCanvasElement | null = null
 	const [isDateFilterVisible, setDateFilterVisible] = useState(false);
 
 	const dateFilterAction = () => {
@@ -17,7 +17,7 @@ const FairScoreChart = () => {
 
 	useEffect(() => {
 		if (chartRef) {
-			const revenueFlowElement = chartRef.getContext("2d");
+			const revenueFlowElement = chartRef.current?.getContext("2d");
 
 			if (revenueFlowElement) {
 				const month = [
@@ -26,10 +26,10 @@ const FairScoreChart = () => {
 				];
 
 				const revenueFlow = new Chart(revenueFlowElement, {
-					id: 1,
 					type: "line",
 					plugins: [
 						{
+							id: "overAllBalance",
 							beforeDatasetsDraw(chart) {
 								chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
 								chart.ctx.shadowBlur = 8;
@@ -159,11 +159,11 @@ const FairScoreChart = () => {
 				</div>
 				<div className="date-filter relative flex flex-row gap-5">
 					<OurDatePicker/>
-					<OurSelect/>
+					<OurSelect options={null} disabled={false}/>
 				</div>
 			</div>
 			<div className="w-full">
-				<canvas id="overAllBalance" ref={(el) => (chartRef = el)} height="280"></canvas>
+				<canvas id="overAllBalance" ref={chartRef} height="280"></canvas>
 			</div>
 		</div>
 	)

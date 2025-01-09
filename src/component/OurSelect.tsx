@@ -2,6 +2,7 @@
 
 import React from "react";
 import Select from 'react-select';
+import {TOurSelect} from "@/component/constants";
 
 const customClassNames = {
 	control: (state: any) =>
@@ -22,7 +23,7 @@ const customClassNames = {
 		} hover:bg-gray-300 dark:hover:bg-gray-500`,
 };
 
-const OurSelect = ({options, disabled}) => {
+const OurSelect: React.FC<TOurSelect> = ({options, disabled}) => {
 	const dummyOptions = [
 		{label: "Stockholm", value: "Stockholm"},
 		{label: "Stockholm2", value: "Stockholm2"}

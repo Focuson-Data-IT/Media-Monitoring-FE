@@ -1,4 +1,9 @@
-export type OurDatePickerType = {
+export type TOurSelect = {
+	options: { label: string, value: string } | null;
+	disabled: boolean
+}
+
+export type TOurDatePicker = {
 	doubleInput?: boolean;
 	inputWidth?: string;
 	singleDatePick?: boolean;
