@@ -115,7 +115,8 @@ const TopRanking = () => {
 	]
 
 	return (
-		<div className="mb-12 rounded-lg bg-white dark:bg-darkblack-600 max-h-[415px] overflow-y-scroll">
+		<div
+			className="mb-12 bg-white dark:bg-darkblack-600 max-h-[415px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700">
 			<div
 				className="flex items-center justify-between border-b border-bgray-300 px-5 py-3 dark:border-darkblack-400">
 				<h3 className="text-xl font-bold text-bgray-900 dark:text-white">Top Ranking</h3>
@@ -132,10 +133,10 @@ const TopRanking = () => {
 						return (
 							<tr
 								key={key}
-								className="h-[20px] bg-white dark:bg-darkblack-600 cursor-pointer hover:bg-bgray-500 dark:hover:bg-bgray-500"
+								className="h-[20px] bg-white dark:bg-darkblack-600 cursor-pointer hover:bg-gray-300 dark:hover:bg-bgray-800"
 
 							>
-								<td className="whitespace-nowrap rounded-l-lg px-4 text-sm font-medium w-auto">
+								<td className="whitespace-nowrap px-4 text-sm font-medium w-auto">
 						<span>
 						<svg
 							width="24"
@@ -172,7 +173,7 @@ const TopRanking = () => {
 										</div>
 									</div>
 								</td>
-								<td className="whitespace-nowrap rounded-r-lg pr-5 text-sm text-gray-500 text-end">
+								<td className="whitespace-nowrap pr-5 text-sm text-gray-500 text-end">
 									87.30
 								</td>
 							</tr>
@@ -182,8 +183,6 @@ const TopRanking = () => {
 				</table>
 			</div>
 		</div>
-
-
 	)
 }
 

@@ -76,6 +76,11 @@ const FairScoreChart = () => {
 				],
 			},
 			options: {
+				interaction: {
+					mode: "index",
+					axis: "x",
+					intersect: false,
+				},
 				maintainAspectRatio: false,
 				responsive: true,
 				scales: {
@@ -101,8 +106,8 @@ const FairScoreChart = () => {
 				},
 				elements: {
 					point: {
-						radius: [0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0],
-						hoverRadius: 6,
+						radius: 0,
+						hoverRadius: 4,
 					},
 				},
 			},
@@ -134,14 +139,12 @@ const FairScoreChart = () => {
 				</div>
 				<div className="hidden items-center space-x-[28px] sm:flex">
 					<div className="flex items-center space-x-2">
-						<div className="h-3 w-3 rounded-full bg-success-300"></div>
 						<span
 							className="text-sm font-medium text-bgray-700 dark:text-white"
 						>bapenda.sby
 					</span>
 					</div>
 					<div className="flex items-center space-x-2">
-						<div className="h-3 w-3 rounded-full bg-orange"></div>
 						<span
 							className="text-sm font-medium text-bgray-700 dark:text-white"
 						>opdsurabaya

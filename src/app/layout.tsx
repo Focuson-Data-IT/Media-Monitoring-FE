@@ -31,6 +31,10 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
 			<link rel="stylesheet" href="/assets/css/output.css"/>
 			<link rel="stylesheet" href="/assets/css/style.css"/>
 			<link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet"/>
+			<link
+				href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+				rel="stylesheet"
+			/>
 		</head>
 		<body
 			className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -38,6 +42,10 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
 		{children}
 
 		<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
+			defer
+		></script>
 		<script src="/assets/js/jquery-3.6.0.min.js"></script>
 		<script src="/assets/js/flatpickr.js"></script>
 		<script src="/assets/js/slick.min.js"></script>

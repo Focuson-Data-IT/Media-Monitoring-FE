@@ -1,11 +1,13 @@
 'use client';
 
-import React from "react";
+import React, {useState} from "react";
 import {TFairDetailBar} from "@/app/(customer)/perform/constants";
 
 const FairDetailBar: React.FC<TFairDetailBar> = ({data, label, unit}) => {
+	const [percentage, setPercentage] = useState(60)
+
 	return (
-		<div className="flex-1 xl:block">
+		<div className="flex-1 xl:block shadow-[4px_0_8px_rgba(0,0,0,0.05)]">
 			<div
 				className="h-full w-full rounded-lg bg-white p-5 dark:bg-darkblack-600"
 			>
@@ -74,8 +76,14 @@ const FairDetailBar: React.FC<TFairDetailBar> = ({data, label, unit}) => {
 								className="relative h-[14px] w-full overflow-hidden rounded bg-bgray-100"
 							>
 								<div
-									style={{width: '65%'}}
-									className="absolute left-0 top-0 h-full rounded bg-success-300"
+									style={{width: `${percentage}%`}}
+									className={`absolute left-0 top-0 h-full rounded ${
+										percentage < 30
+											? 'bg-danger-300'
+											: percentage < 70
+												? 'bg-warning-300'
+												: 'bg-success-300'
+									}`}
 								></div>
 							</div>
 						</div>

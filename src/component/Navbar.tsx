@@ -1,13 +1,13 @@
-// 'use-client'
+'use client';
+
+import {useState} from "react";
 
 const Navbar = () => {
-	// const profileAction = () => {
-	// 	const profileBox = document.querySelector(".profile-box");
-	// 	const profileOutside = document.querySelector(".profile-outside");
-	//
-	// 	if (profileBox) profileBox.classList.toggle("hidden");
-	// 	if (profileOutside) profileOutside.classList.toggle("hidden");
-	// };
+	const [isProfileVisible, setProfileVisible] = useState(false);
+
+	const profileAction = () => {
+		setProfileVisible((prev) => !prev);
+	};
 
 	return (
 		<>
@@ -97,7 +97,7 @@ const Navbar = () => {
 					{/*		</div>*/}
 					<div className="quick-access-wrapper relative">
 						<div className="flex items-center space-x-[43px]">
-							<div className="hidden items-center space-x-5 xl:flex">
+							<div className="items-center space-x-5 xl:flex">
 								<button
 									type="button"
 									id="theme-toggle"
@@ -167,8 +167,8 @@ const Navbar = () => {
 								className="hidden h-[48px] w-[1px] bg-bgray-300 dark:bg-darkblack-400 xl:block"
 							></div>
 							<div
-								// onClick={profileAction}
-								className="flex cursor-pointer space-x-0 lg:space-x-3"
+								onClick={profileAction}
+								className="flex cursor-pointer space-x-0 lg:space-x-3 gap-3"
 							>
 								<div
 									className="h-[52px] w-[52px] overflow-hidden rounded-xl border border-bgray-300"
@@ -215,12 +215,12 @@ const Navbar = () => {
 
 						<div className="profile-wrapper">
 							<div
-								// onClick={profileAction}
-								className="profile-outside fixed -left-[43px] top-0 hidden h-full w-full"
+								onClick={profileAction}
+								className={`profile-outside fixed -left-[43px] top-0 ${!isProfileVisible ? 'hidden' : ''} h-full w-full`}
 							></div>
 							<div
 								style={{filter: 'drop-shadow(12px 12px 40px rgba(0, 0, 0, 0.08))'}}
-								className="profile-box absolute right-0 top-[81px] hidden w-[300px] overflow-hidden rounded-lg bg-white dark:bg-darkblack-600"
+								className={`profile-box absolute right-0 top-[81px] w-[300px] ${!isProfileVisible ? 'hidden overflow-hidden' : ''} rounded-lg bg-white dark:bg-darkblack-600`}
 							>
 								<div className="relative w-full px-3 py-2">
 									<div>
@@ -379,7 +379,7 @@ const Navbar = () => {
 					</div>
 					<div className="mr-2">
 						<div
-							// onClick={profileAction}
+							onClick={profileAction}
 							className="flex cursor-pointer space-x-0 lg:space-x-3"
 						>
 							<div
@@ -426,12 +426,12 @@ const Navbar = () => {
 
 						<div className="profile-wrapper">
 							<div
-								// onClick={profileAction}
-								className="profile-outside fixed -left-[43px] top-0 hidden h-full w-full"
+								onClick={profileAction}
+								className={`profile-outside fixed -left-[43px] top-0 ${!isProfileVisible ? 'hidden' : ''} h-full w-full`}
 							></div>
 							<div
 								style={{filter: 'drop-shadow(12px 12px 40px rgba(0, 0, 0, 0.08))'}}
-								className="profile-box absolute right-0 top-[81px] hidden w-[300px] overflow-hidden rounded-lg bg-white"
+								className={`profile-box absolute right-0 top-[81px] w-[300px] ${!isProfileVisible ? 'hidden overflow-hidden' : ''} rounded-lg bg-white`}
 							>
 								<div className="relative w-full px-3 py-2">
 									<div>

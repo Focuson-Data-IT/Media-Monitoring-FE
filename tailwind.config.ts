@@ -33,6 +33,9 @@ export default {
 				"5xl": "48px",
 			},
 			colors: {
+				danger: {
+					300: '#f87171',
+				},
 				darkblack: {
 					300: "#747681",
 					400: "#2A313C",
@@ -141,6 +144,7 @@ export default {
 		plugin(function ({addVariant}) {
 			addVariant("current", "&.active");
 		}),
-		require('flowbite/plugin')
+		require('flowbite/plugin'),
+		require('tailwind-scrollbar')
 	],
 };

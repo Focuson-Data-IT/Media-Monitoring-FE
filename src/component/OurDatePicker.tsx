@@ -8,6 +8,7 @@ const OurDatePicker = () => {
 	return (
 		<>
 			<Datepicker
+				className="rounded-sm"
 				onSelect={(e) => console.info(e)}
 				onChange={(e) => console.info(e)}
 				onInput={(e) => console.info(e)}
