@@ -41,20 +41,12 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
 		>
 		{children}
 
-		<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"
-			defer
-		></script>
+		<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
 		<script src="/assets/js/jquery-3.6.0.min.js"></script>
 		<script src="/assets/js/flatpickr.js"></script>
 		<script src="/assets/js/slick.min.js"></script>
-		<script src="/assets/js/aos.js"></script>
-		<script>
-			AOS.init();
-		</script>
 		<script src="/assets/js/main.js"></script>
-		<script src="/assets/js/chart.js"></script>
 		</body>
 		</html>);
 }

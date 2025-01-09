@@ -1,13 +1,14 @@
 'use client'
 
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import Chart from "chart.js/auto";
 import moment from "moment";
 import OurDatePicker from "@/component/OurDatePicker";
 import OurSelect from "@/component/OurSelect";
 
 const FairScoreChart = () => {
-	const chartRef = useRef(null);
+	// const chartRef = useRef<HTMLCanvasElement | null>(null);
+	let chartRef: HTMLCanvasElement | null = null
 	const [isDateFilterVisible, setDateFilterVisible] = useState(false);
 
 	const dateFilterAction = () => {
@@ -15,107 +16,111 @@ const FairScoreChart = () => {
 	};
 
 	useEffect(() => {
-		const revenueFlowElement = chartRef.current.getContext("2d");
+		if (chartRef) {
+			const revenueFlowElement = chartRef.getContext("2d");
 
-		const month = [
-			"Jan", "Feb", "Mar", "April", "May", "Jun",
-			"July", "Aug", "Sep", "Oct", "Nov", "Dec"
-		];
+			if (revenueFlowElement) {
+				const month = [
+					"Jan", "Feb", "Mar", "April", "May", "Jun",
+					"July", "Aug", "Sep", "Oct", "Nov", "Dec"
+				];
 
-		const revenueFlow = new Chart(revenueFlowElement, {
-			type: "line",
-			plugins: [
-				{
-					beforeDatasetsDraw(chart) {
-						chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
-						chart.ctx.shadowBlur = 8;
-					},
-					afterDatasetsDraw(chart) {
-						chart.ctx.shadowColor = "rgba(0, 0, 0, 0)";
-						chart.ctx.shadowBlur = 0;
-					},
-				},
-			],
-			data: {
-				labels: month,
-				datasets: [
-					{
-						label: "bapenda.sby",
-						data: [65, 75, 65, 55, 75, 55, 45, 65, 75, 65, 85, 75],
-						backgroundColor: () => {
-							const gradient = revenueFlowElement.createLinearGradient(0, 0, 0, 450);
-							gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
-							gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
-							return gradient;
+				const revenueFlow = new Chart(revenueFlowElement, {
+					type: "line",
+					plugins: [
+						{
+							beforeDatasetsDraw(chart) {
+								chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
+								chart.ctx.shadowBlur = 8;
+							},
+							afterDatasetsDraw(chart) {
+								chart.ctx.shadowColor = "rgba(0, 0, 0, 0)";
+								chart.ctx.shadowBlur = 0;
+							},
 						},
-						borderColor: "#22C55E",
-						pointBorderColor: "#ffffff",
-						pointBackgroundColor: "#22C55E",
-						pointBorderWidth: 4,
-						borderWidth: 2,
-						fill: true,
-						tension: 0.4,
+					],
+					data: {
+						labels: month,
+						datasets: [
+							{
+								label: "bapenda.sby",
+								data: [65, 75, 65, 55, 75, 55, 45, 65, 75, 65, 85, 75],
+								backgroundColor: () => {
+									const gradient = revenueFlowElement.createLinearGradient(0, 0, 0, 450);
+									gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
+									gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
+									return gradient;
+								},
+								borderColor: "#22C55E",
+								pointBorderColor: "#ffffff",
+								pointBackgroundColor: "#22C55E",
+								pointBorderWidth: 4,
+								borderWidth: 2,
+								fill: true,
+								tension: 0.4,
+							},
+							{
+								label: "opdsurabaya",
+								data: [45, 15, 37, 85, 71, 43, 47, 89, 12, 89, 24, 45],
+								backgroundColor: () => {
+									const gradient = revenueFlowElement.createLinearGradient(0, 0, 0, 450);
+									gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
+									gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
+									return gradient;
+								},
+								borderColor: "rgb(255, 120, 75)",
+								pointBorderColor: "#ffffff",
+								pointBackgroundColor: "rgb(255, 120, 75)",
+								pointBorderWidth: 4,
+								borderWidth: 2,
+								fill: true,
+								tension: 0.4,
+							},
+						],
 					},
-					{
-						label: "opdsurabaya",
-						data: [45, 15, 37, 85, 71, 43, 47, 89, 12, 89, 24, 45],
-						backgroundColor: () => {
-							const gradient = revenueFlowElement.createLinearGradient(0, 0, 0, 450);
-							gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
-							gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
-							return gradient;
+					options: {
+						interaction: {
+							mode: "index",
+							axis: "x",
+							intersect: false,
 						},
-						borderColor: "rgb(255, 120, 75)",
-						pointBorderColor: "#ffffff",
-						pointBackgroundColor: "rgb(255, 120, 75)",
-						pointBorderWidth: 4,
-						borderWidth: 2,
-						fill: true,
-						tension: 0.4,
-					},
-				],
-			},
-			options: {
-				interaction: {
-					mode: "index",
-					axis: "x",
-					intersect: false,
-				},
-				maintainAspectRatio: false,
-				responsive: true,
-				scales: {
-					x: {
-						// grid: {color: "rgb(243 ,246, 255 ,1)"},
-					},
-					y: {
-						beginAtZero: true,
-						// grid: {
-						// 	color: "rgb(243 ,246, 255 ,1)",
-						// 	borderDash: [5, 5],
-						// 	borderDashOffset: 2,
-						// },
-						ticks: {
-							callback(value) {
-								return `${value}K `;
+						maintainAspectRatio: false,
+						responsive: true,
+						scales: {
+							x: {
+								// grid: {color: "rgb(243 ,246, 255 ,1)"},
+							},
+							y: {
+								beginAtZero: true,
+								// grid: {
+								// 	color: "rgb(243 ,246, 255 ,1)",
+								// 	borderDash: [5, 5],
+								// 	borderDashOffset: 2,
+								// },
+								ticks: {
+									callback(value) {
+										return `${value}K `;
+									},
+								},
+							},
+						},
+						plugins: {
+							legend: {position: "top", display: false},
+						},
+						elements: {
+							point: {
+								radius: 0,
+								hoverRadius: 4,
 							},
 						},
 					},
-				},
-				plugins: {
-					legend: {position: "top", display: false},
-				},
-				elements: {
-					point: {
-						radius: 0,
-						hoverRadius: 4,
-					},
-				},
-			},
-		});
+				});
 
-		return () => {
-			revenueFlow.destroy(); // Clean up chart instance
-		};
+				return () => {
+					revenueFlow.destroy();
+				};
+			}
+		}
 	}, []);
 
 	return (
@@ -157,7 +162,7 @@ const FairScoreChart = () => {
 				</div>
 			</div>
 			<div className="w-full">
-				<canvas id="overAllBalance" ref={chartRef} height="280"></canvas>
+				<canvas id="overAllBalance" ref={(el) => (chartRef = el)} height="280"></canvas>
 			</div>
 		</div>
 	)

@@ -9,10 +9,10 @@ const OurDatePicker = () => {
 		<>
 			<Datepicker
 				className="rounded-sm"
-				onSelect={(e) => console.info(e)}
-				onChange={(e) => console.info(e)}
-				onInput={(e) => console.info(e)}
-				onSelectedDateChanged={(e) => console.info(e)}
+				// onSelect={(e) => console.info(e)}
+				// onChange={(e) => console.info(e)}
+				// onInput={(e) => console.info(e)}
+				// onSelectedDateChanged={(e) => console.info(e)}
 			/>
 		</>
 	);
