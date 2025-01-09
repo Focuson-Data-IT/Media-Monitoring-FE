@@ -26,6 +26,7 @@ const FairScoreChart = () => {
 				];
 
 				const revenueFlow = new Chart(revenueFlowElement, {
+					id: 1,
 					type: "line",
 					plugins: [
 						{
