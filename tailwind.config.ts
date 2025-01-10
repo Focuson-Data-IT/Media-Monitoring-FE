@@ -3,7 +3,7 @@ import plugin from "tailwindcss/plugin";
 export default {
 	content: [
 		"./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-		"./src/component/**/*.{js,ts,jsx,tsx,mdx}",
+		"./src/components/**/*.{js,ts,jsx,tsx,mdx}",
 		"./src/app/**/*.{js,ts,jsx,tsx,mdx}",
 		"./public/assets/js/**/*.js",
 		"./node_modules/flowbite/**/*.js"

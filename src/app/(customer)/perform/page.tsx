@@ -1,9 +1,10 @@
 'use client';
 
 import React from "react";
-import FairScoreChart from "@/app/(customer)/perform/component/FairScoreChart";
-import FairDetailBar from "@/app/(customer)/perform/component/FairDetailBar";
-import TopRanking from "@/app/(customer)/perform/component/TopRanking";
+import FairScoreChart from "@/app/(customer)/perform/components/FairScoreChart";
+import FairDetailBar from "@/app/(customer)/perform/components/FairDetailBar";
+import TopRanking from "@/app/(customer)/perform/components/TopRanking";
+import PostsTable from "@/app/(customer)/perform/components/PostsTable";
 
 const Perform = () => {
 	return (
@@ -19,8 +20,7 @@ const Perform = () => {
 			</div>
 
 			<h1 className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">Fair</h1>
-
-			<div className="2xl:flex 2xl:space-x-[48px]">
+			<div className="2xl:flex 2xl:space-x-[48px] mb-5">
 				<div className="w-full 2xl:flex-1 mb-5">
 					<FairDetailBar data={null} label={"Followers"} unit={"K"}/>
 				</div>
@@ -33,6 +33,10 @@ const Perform = () => {
 				<div className="w-full 2xl:flex-1 mb-5">
 					<FairDetailBar data={null} label={"Responsiveness"} unit={"%"}/>
 				</div>
+			</div>
+
+			<div className="2xl:flex 2xl:space-x-[48px] mb-5">
+				<PostsTable/>
 			</div>
 		</>
 	)

@@ -2,7 +2,7 @@
 
 import React from "react";
 import Select from 'react-select';
-import {TOurSelect} from "@/component/constants";
+import {TOurSelect} from "@/components/constants";
 
 const customClassNames = {
 	control: (state: any) =>

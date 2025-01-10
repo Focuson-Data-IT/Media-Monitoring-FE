@@ -3,8 +3,8 @@
 import {useEffect, useRef, useState} from "react";
 import Chart from "chart.js/auto";
 import moment from "moment";
-import OurDatePicker from "@/component/OurDatePicker";
-import OurSelect from "@/component/OurSelect";
+import OurDatePicker from "@/components/OurDatePicker";
+import OurSelect from "@/components/OurSelect";
 
 const FairScoreChart = () => {
 	const chartRef = useRef<HTMLCanvasElement | null>(null);

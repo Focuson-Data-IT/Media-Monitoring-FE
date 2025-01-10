@@ -1,8 +1,8 @@
 'use client';
 
 import React from "react";
-import Sidebar from "@/component/Sidebar";
-import Navbar from "@/component/Navbar";
+import Sidebar from "@/components/Sidebar";
+import Navbar from "@/components/Navbar";
 
 const CustomerLayout = ({children,}: Readonly<{ children: React.ReactNode; }>) => {
 	return (
