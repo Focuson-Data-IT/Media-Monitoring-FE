@@ -3,8 +3,9 @@
 import React, {useState} from "react";
 import {TFairDetailBar} from "@/app/(customer)/perform/constants";
 
-const FairDetailBar: React.FC<TFairDetailBar> = ({data, label, unit}) => {
-	const [percentage, setPercentage] = useState(60)
+const FairDetailBar: React.FC<TFairDetailBar> = ({data, label, unit, isLoading}) => {
+	const [percentage, setPercentage] = useState(60);
+
 
 	return (
 		<div className="flex-1 xl:block shadow-[4px_0_8px_rgba(0,0,0,0.05)]">
