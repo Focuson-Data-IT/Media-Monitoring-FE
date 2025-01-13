@@ -47,7 +47,7 @@ request.interceptors.response.use(
 				expiredTokenHandler();
 			}
 		} else if (error.code === 'ERR_NETWORK') {
-			window.history.pushState({}, 'Redirect Network Error', '/auth');
+			// window.history.pushState({}, 'Redirect Network Error', '/auth');
 			if (error.response?.status === 401) {
 				expiredTokenHandler();
 			}

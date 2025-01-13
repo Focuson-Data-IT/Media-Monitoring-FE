@@ -1,6 +1,8 @@
 export type TFairDetailBar = {
-	data: any;
 	label: string;
 	unit: string;
-	isLoading: boolean;
+	period: {
+		startDate: Date | string | null,
+		endDate: Date | string | null,
+	};
 }

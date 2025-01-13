@@ -1,4 +1,5 @@
 'use client'
+
 const Login = () => {
 	return (
 		<>
@@ -153,7 +154,8 @@ const Login = () => {
 									</div>
 								</div>
 								<a
-									href="index.html"
+									// onClick={() => redirect('/perform')} //serverside tidak bisa handle load script
+									href="/perform"
 									className="py-3.5 flex items-center justify-center text-white font-bold bg-success-300 hover:bg-success-400 transition-all rounded-lg w-full"
 								>
 									Sign In
