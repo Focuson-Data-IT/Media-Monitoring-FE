@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Chart from "chart.js/auto";
 import moment from "moment";
 import request from "@/utils/request";
@@ -22,37 +22,30 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairScoreData, setFairScoreData] = useState<any>(null);
-	const [datasets, setDatasets] = useState<any>(null);
 
 	const [fairScoreChart, setFairScoreChart] = useState<Chart | null>(null);
 
-	const options = useMemo(() => {
-		return datasets?.map((v: any) => ({
-			label: v.label,
-			value: v.label,
-		})) || [];
-	}, [datasets]);
-
-	// const [permaOptions, setPermaOptions] = useState([]);
-
-	const [parentSelectedOption, setParentSelectedOption] = useState<Array<{
+	const [selectedOption, setSelectedOption] = useState<Array<{
 		label: string,
 		value: string
 	}> | null>(null)
 
-	const [permaOptions, setPermaOptions] = useState<Array<{
+	const [options, setOptions] = useState<Array<{
 		label: string,
 		value: string
 	}> | null>(null)
+
+	const [labels, setLabels] = useState<any>(null);
+	const [datasets, setDatasets] = useState<any>(null);
 
 
 	const getFairScoreChartData = async (payload: any) => {
 		setLoading(true)
 		const response = await request.get(`/getFairScores?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
-		setFairScoreData(response.data?.data);
+		return response.data?.data;
 	}
 
-	const drawChart = (labels: any, datasets: any) => {
+	const drawChart = (labels, datasets) => {
 		if (chartRef && chartRef.current) {
 			const ctx = chartRef.current?.getContext("2d");
 
@@ -92,7 +85,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 							beginAtZero: true,
 							ticks: {
 								callback(value) {
-									return `${value}K `;
+									return `${value}`;
 								},
 							},
 						},
@@ -123,45 +116,61 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 
 	useEffect(() => {
 		getFairScoreChartData(period).then((v) => {
-			setLoading(false);
+			console.info(v)
+			setFairScoreData(v);
+
+			const dateArray = buildLabels(period.startDate, period.endDate);
+			const labelsData = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
+			setLabels(labelsData);
+
+
+			const filterByUsername = selectedOption?.map((v: any) => {
+				return v?.value;
+			})
+
+			let datasetsBuilderOption = {
+				filterByUsername: filterByUsername
+				// filterByUsername: null
+			}
+
+
+			const dataGroupedByUsername = groupDataByUsername(v);
+
+			let datasetsBuilded = buildDatasets(dataGroupedByUsername, labelsData, datasetsBuilderOption)
+
+			const datasetsWithColor = datasetsBuilded?.map((v: any) => {
+				return {
+					...v,
+					backgroundColor: createGradient(chartRef),
+				}
+			})
+			setDatasets(datasetsWithColor);
 		})
 	}, [period]);
 
 	useEffect(() => {
-		const dateArray = buildLabels(period.startDate, period.endDate);
-		const labels = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
+		drawChart(labels, datasets);
+		setLoading(false);
+	}, [fairScoreData, selectedOption, datasets]);
 
-		const filterByUsername = parentSelectedOption?.map((v: any) => {
-			return v?.value;
-		})
+	// useEffect(() => {
+	// 	const buildOption = datasets?.map((v: any) => ({
+	// 		label: v.label,
+	// 		value: v.label,
+	// 	})) || [];
+	//
+	// 	setOptions(buildOption)
+	// }, [datasets]);
 
-		let datasetsBuilderOption = {
-			filterByUsername: filterByUsername
-		}
-
-		const dataGroupedByUsername = groupDataByUsername(fairScoreData);
-
-		let datasetsBuilded = buildDatasets(dataGroupedByUsername, labels, datasetsBuilderOption)
-
-		const datasetsWithColor = datasetsBuilded?.map((v: any) => {
-			return {
-				...v,
-				backgroundColor: createGradient(chartRef),
-			}
-		})
-
-		setDatasets(datasetsBuilded)
-		drawChart(labels, datasetsWithColor);
-		// setPermaOptions(options);
-		// setParentSelectedOption(options);
-	}, [fairScoreData, parentSelectedOption]);
-
-	useEffect(() => {
-		if (options?.length > 0) {
-			setPermaOptions(options);
-			setParentSelectedOption(options);
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const {datasets} = createChartPayload()
+	//
+	// 	const buildOption = datasets?.map((v: any) => ({
+	// 		label: v.label,
+	// 		value: v.label,
+	// 	})) || [];
+	// 	setOptions(buildOption)
+	// }, []);
 
 	return (
 		<div
@@ -199,8 +208,10 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 							endDate: v[1],
 						});
 					}}/>
-					<OurSelect permaOptions={permaOptions} options={options} disabled={false}
-							   setParentSelectedOption={setParentSelectedOption}/>
+					{/*<OurSelect permaOptions={permaOptions} options={options} disabled={false}*/}
+					{/*		   setSelectedOption={setSelectedOption}/>*/}
+					<OurSelect options={options} disabled={false}
+							   setSelectedOption={setSelectedOption}/>
 				</div>
 			</div>
 			{
