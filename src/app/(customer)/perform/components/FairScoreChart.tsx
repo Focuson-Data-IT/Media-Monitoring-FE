@@ -27,7 +27,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 	const [fairScoreChart, setFairScoreChart] = useState<Chart | null>(null);
 
 	const options = useMemo(() => {
-		return datasets?.map((v) => ({
+		return datasets?.map((v: any) => ({
 			label: v.label,
 			value: v.label,
 		})) || [];
@@ -38,21 +38,21 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 	const [parentSelectedOption, setParentSelectedOption] = useState<Array<{
 		label: string,
 		value: string
-	} | null>>(null)
+	}> | null>(null)
 
 	const [permaOptions, setPermaOptions] = useState<Array<{
 		label: string,
 		value: string
-	} | null>>([])
+	}> | null>(null)
 
 
-	const getFairScoreChartData = async (payload) => {
+	const getFairScoreChartData = async (payload: any) => {
 		setLoading(true)
 		const response = await request.get(`/getFairScores?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
 		setFairScoreData(response.data?.data);
 	}
 
-	const drawChart = (labels, datasets) => {
+	const drawChart = (labels: any, datasets: any) => {
 		if (chartRef && chartRef.current) {
 			const ctx = chartRef.current?.getContext("2d");
 
@@ -60,7 +60,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 				fairScoreChart.destroy();
 			}
 
-			const newChart = new Chart(ctx, {
+			const newChart: any = new Chart(ctx, {
 				type: "line",
 				plugins: [
 					{
@@ -129,9 +129,9 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 
 	useEffect(() => {
 		const dateArray = buildLabels(period.startDate, period.endDate);
-		const labels = dateArray.map((date) => date.format("YYYY-MM-DD"));
+		const labels = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
 
-		const filterByUsername = parentSelectedOption?.map((v) => {
+		const filterByUsername = parentSelectedOption?.map((v: any) => {
 			return v?.value;
 		})
 
@@ -143,7 +143,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 
 		let datasetsBuilded = buildDatasets(dataGroupedByUsername, labels, datasetsBuilderOption)
 
-		const datasetsWithColor = datasetsBuilded?.map((v) => {
+		const datasetsWithColor = datasetsBuilded?.map((v: any) => {
 			return {
 				...v,
 				backgroundColor: createGradient(chartRef),

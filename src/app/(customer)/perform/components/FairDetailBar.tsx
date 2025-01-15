@@ -11,11 +11,11 @@ const FairDetailBar: React.FC<TFairDetailBar> = ({label, unit, period}) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairChartData, setFairChartData] = useState<any>(null);
 
-	const getFairChartData = async (payload) => {
-		const url = `/get${label}?customer_username=kemenkoinfra&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`;
+	const getFairChartData = async (payload: any) => {
+		const url = `/get${label}?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`;
 		const response = await request.get(url);
 
-		const newResponse = response.data?.data?.map((v) => {
+		const newResponse = response.data?.data?.map((v: any) => {
 			return {
 				...v,
 				percentage: v.value / v.max_value * 100
@@ -59,7 +59,7 @@ const FairDetailBar: React.FC<TFairDetailBar> = ({label, unit, period}) => {
 								</div>
 								<div
 									className="flex flex-col h-[300px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700">
-									{fairChartData?.map((v, key) => {
+									{fairChartData?.map((v: any, key: number) => {
 										return (
 											<div className="flex items-center mb-2" key={key}>
 												<div className="flex-1">

@@ -14,7 +14,7 @@ const TopRanking: React.FC<TTopRanking> = ({period}) => {
 	const getFairRanking = async (payload) => {
 		setLoading(true);
 
-		const response = await request.get(`/getFairRanking?customer_username=kemenkoinfra&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
+		const response = await request.get(`/getFairRanking?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
 
 		setFairRankingData(response.data?.data);
 	}
@@ -51,12 +51,11 @@ const TopRanking: React.FC<TTopRanking> = ({period}) => {
 							<div className="overflow-x-auto">
 								<table className="table-auto w-full overflow-y-scroll">
 									<tbody>
-									{fairRankingData?.map((v, key) => {
+									{fairRankingData?.map((v: any, key: number) => {
 										return (
 											<tr
 												key={key}
 												className="h-[20px] bg-white dark:bg-darkblack-600 cursor-pointer hover:bg-gray-300 dark:hover:bg-bgray-800"
-
 											>
 												<td className="whitespace-nowrap px-4 text-sm font-medium w-auto">
 						<span>
@@ -90,8 +89,9 @@ const TopRanking: React.FC<TTopRanking> = ({period}) => {
 															<h4 className="text-sm font-bold text-bgray-900 dark:text-white">{v?.username}</h4>
 															<div>
 																{/*<span className="text-sm font-medium text-bgray-700 dark:text-bgray-50">Finance managers • </span>*/}
-																<span
-																	className="text-gray-500 text-sm">https://www.instagram.com/{v?.username}</span>
+																<a
+																	href={`https://www.instagram.com/${v?.username}`}
+																	className="text-gray-500 text-sm">https://www.instagram.com/{v?.username}</a>
 															</div>
 														</div>
 													</div>
