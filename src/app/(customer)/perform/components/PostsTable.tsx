@@ -1,6 +1,6 @@
 const PostsTable = () => {
 	return (
-		<section className="mb-6 2xl:mb-0 2xl:flex-1">
+		<section className="mb-6 2xl:mb-0 2xl:flex-1 shadow-[4px_0_8px_rgba(0,0,0,0.05)]">
 			<div
 				className="w-full rounded-lg bg-white px-[24px] py-[20px] dark:bg-darkblack-600"
 			>

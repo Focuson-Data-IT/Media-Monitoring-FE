@@ -1,6 +1,12 @@
+export type TPeriodInput = {
+	startDate: Date | string | null;
+	endDate: Date | string | null;
+};
+
 export type TOurSelect = {
 	options: { label: string, value: string } | null;
-	disabled: boolean
+	// disabled: boolean;
+	// setParentSelectedOption: any;
 }
 
 export type TOurDatePicker = {

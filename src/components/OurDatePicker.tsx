@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const customDatePickerStyles = {
 	input: () =>
-		`flex items-center justify-between rounded-2xl h-[42px] block w-full border border-gray-300 dark:border-gray-600 outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 px-4 text-sm transition-all`,
+		`rounded-md flex items-center justify-between rounded-2xl h-[42px] block w-full border border-gray-300 dark:border-gray-600 outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-gray-50 text-gray-900 focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 px-4 text-sm transition-all`,
 	calendar: () =>
 		`rounded-2xl border border-gray-300 dark:border-gray-600 mt-2 shadow-lg dark:bg-gray-800 bg-white`,
 	day: (state: { isSelected: boolean; isToday: boolean }) =>
@@ -15,24 +15,25 @@ const customDatePickerStyles = {
 					? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
 					: "bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
 		} hover:bg-gray-300 dark:hover:bg-gray-500`,
-	popper: () => `absolute z-[9999]`,
+	popper: () => `absolute z-[1050]`,
 };
 
-const DateRangePicker: React.FC<{ applyCallback: void }> = ({applyCallback = null}) => {
-	const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-		null,
-		null,
-	]);
+const DateRangePicker: React.FC<{ applyCallback: (dates: [Date | null, Date | null]) => void }> = ({applyCallback}) => {
+	const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
 	const [startDate, endDate] = dateRange;
 
 	return (
 		<div className="flex flex-col">
-			<div className="relative" style={{zIndex: 9999}}>
+			<div className="relative" style={{zIndex: 1050}}>
 				<DatePicker
 					selected={startDate}
-					onChange={(v) => {
-						setDateRange(v)
-						applyCallback(v)
+					onChange={(dates) => {
+						const [start, end] = dates as [Date | null, Date | null];
+						setDateRange([start, end]);
+
+						if (start && end) {
+							applyCallback([start, end]);
+						}
 					}}
 					startDate={startDate}
 					endDate={endDate}
@@ -41,12 +42,6 @@ const DateRangePicker: React.FC<{ applyCallback: void }> = ({applyCallback = nul
 					placeholderText="Select period"
 					className={customDatePickerStyles.input()}
 					calendarClassName={customDatePickerStyles.calendar()}
-					dayClassName={(date) =>
-						customDatePickerStyles.day({
-							isSelected: !!(startDate && endDate && date >= startDate && date <= endDate),
-							isToday: date.toDateString() === new Date().toDateString(),
-						})
-					}
 					popperPlacement="bottom-start"
 				/>
 			</div>
@@ -55,3 +50,4 @@ const DateRangePicker: React.FC<{ applyCallback: void }> = ({applyCallback = nul
 };
 
 export default DateRangePicker;
+

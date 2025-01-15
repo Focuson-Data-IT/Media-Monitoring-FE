@@ -1,3 +1,5 @@
+import {TPeriodInput} from "@/components/constants";
+
 export type TFairDetailBar = {
 	label: string;
 	unit: string;
@@ -5,4 +7,8 @@ export type TFairDetailBar = {
 		startDate: Date | string | null,
 		endDate: Date | string | null,
 	};
+}
+
+export type TTopRanking = {
+	period: TPeriodInput
 }

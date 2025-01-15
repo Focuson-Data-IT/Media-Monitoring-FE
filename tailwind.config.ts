@@ -145,6 +145,7 @@ export default {
 			addVariant("current", "&.active");
 		}),
 		require('flowbite/plugin'),
-		require('tailwind-scrollbar')
+		require('tailwind-scrollbar'),
+		// require('daisyui')
 	],
 };

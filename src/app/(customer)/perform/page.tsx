@@ -5,23 +5,27 @@ import FairScoreChart from "@/app/(customer)/perform/components/FairScoreChart";
 import FairDetailBar from "@/app/(customer)/perform/components/FairDetailBar";
 import TopRanking from "@/app/(customer)/perform/components/TopRanking";
 import PostsTable from "@/app/(customer)/perform/components/PostsTable";
+import moment from "moment/moment";
+import {TPeriodInput} from "@/components/constants";
 
 const Perform = () => {
-	const [parentPeriod, setParentPeriod] = useState<{
-		startDate: Date | string | null,
-		endDate: Date | string | null
-	}>(null)
-
+	const [parentPeriod, setParentPeriod] = useState<TPeriodInput>({
+		startDate: moment().toDate(),
+		endDate: moment().toDate()
+	})
 
 	return (
 		<>
 			<h1 className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">Competitor</h1>
-			<div className="2xl:flex 2xl:space-x-[48px]">
-				<div className="mb-6 w-full 2xl:mb-0 2xl:w-70">
+			<div className="flex flex-col lg:flex-row lg:space-x-6 w-full">
+				{/* FairScoreChart - 70% pada lg */}
+				<div className="mb-6 w-full lg:mb-0 lg:flex-[7]">
 					<FairScoreChart setParentPeriod={setParentPeriod}/>
 				</div>
-				<div className="w-full 2xl:flex-1">
-					<TopRanking/>
+
+				{/* TopRanking - 30% pada lg */}
+				<div className="w-full lg:flex-[3]">
+					<TopRanking period={parentPeriod}/>
 				</div>
 			</div>
 
