@@ -100,7 +100,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 								beginAtZero: true,
 								ticks: {
 									callback(value) {
-										return `${value}K `;
+										return `${value} `;
 									},
 								},
 							},

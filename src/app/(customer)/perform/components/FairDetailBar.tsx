@@ -6,6 +6,7 @@ import request from "@/utils/request";
 import moment from "moment";
 import OurLoading from "@/components/OurLoading";
 import OurEmptyData from "@/components/OurEmptyData";
+import {followersValueFormatter} from "@/utils/numberFormatter";
 
 const FairDetailBar: React.FC<TFairDetailBar> = ({label, unit, period}) => {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -69,7 +70,7 @@ const FairDetailBar: React.FC<TFairDetailBar> = ({label, unit, period}) => {
 							  >{v.username}</span
 							  >
 														<span className="text-sm font-medium dark:text-white"
-														>{v.value} {unit}</span
+														>{label === 'Followers' ? followersValueFormatter(v.value) : v.value} {unit}</span
 														>
 													</div>
 													<div

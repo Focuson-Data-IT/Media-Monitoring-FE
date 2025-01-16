@@ -11,7 +11,8 @@ const Navbar = () => {
 
 	return (
 		<>
-			<header className="header-wrapper fixed z-30 hidden w-full md:block">
+			<header
+				className="header-wrapper fixed z-30 hidden w-full md:block shadow-[4px_0_8px_rgba(0,0,0,0.1)] z-11">
 				<div
 					className="relative flex h-[108px] w-full items-center justify-between bg-white px-10 dark:bg-darkblack-600 2xl:px-[76px]"
 				>
@@ -43,16 +44,16 @@ const Navbar = () => {
                 </span>
 					</button>
 					<div>
-						<h3
-							className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px]"
-						>
-							Dashboard
-						</h3>
-						<p
-							className="text-xs font-medium text-bgray-600 dark:text-bgray-50 lg:text-sm lg:leading-[25.2px]"
-						>
-							Let’s check your update today
-						</p>
+						{/*<h3*/}
+						{/*	className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px]"*/}
+						{/*>*/}
+						{/*	Dashboard*/}
+						{/*</h3>*/}
+						{/*<p*/}
+						{/*	className="text-xs font-medium text-bgray-600 dark:text-bgray-50 lg:text-sm lg:leading-[25.2px]"*/}
+						{/*>*/}
+						{/*	Let’s check your update today*/}
+						{/*</p>*/}
 					</div>
 					{/*		<div className="searchbar-wrapper">*/}
 					{/*			<div*/}
@@ -184,7 +185,7 @@ const Navbar = () => {
 										<h3
 											className="text-base font-bold leading-[28px] text-bgray-900 dark:text-white"
 										>
-											John Doe
+											bapendabdg@focuson.com
 										</h3>
 										<span>
                           <svg
@@ -207,7 +208,7 @@ const Navbar = () => {
 									<p
 										className="text-sm font-medium leading-[20px] text-bgray-600 dark:text-bgray-50"
 									>
-										Super Admin
+										Mitra
 									</p>
 								</div>
 							</div>

@@ -6,6 +6,7 @@ import moment from "moment";
 import {TTopRanking} from "@/app/(customer)/perform/constants";
 import OurLoading from "@/components/OurLoading";
 import OurEmptyData from "@/components/OurEmptyData";
+import {scoreFormatter} from "@/utils/numberFormatter";
 
 const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 	const [loading, setLoading] = useState<boolean>(true);
@@ -76,8 +77,8 @@ const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 						>
 							<path
 								d="M12.0001 17.75L5.82808 20.995L7.00708 14.122L2.00708 9.25495L8.90708 8.25495L11.9931 2.00195L15.0791 8.25495L21.9791 9.25495L16.9791 14.122L18.1581 20.995L12.0001 17.75Z"
-								fill={key < 3 ? `#F6A723` : '#FFFF'}
-								stroke={key < 3 ? `#F6A723` : '#FFFF'}
+								fill={key < 3 ? `#F6A723` : '#D3D3D3'}
+								stroke={key < 3 ? `#F6A723` : '#D3D3D3'}
 								strokeLinecap="round"
 								strokeLinejoin="round"
 							/>
@@ -99,13 +100,15 @@ const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 																{/*<span className="text-sm font-medium text-bgray-700 dark:text-bgray-50">Finance managers • </span>*/}
 																<a
 																	href={`https://www.instagram.com/${v?.username}`}
+																	target="_blank"
+																	rel="noopener noreferrer"
 																	className="text-gray-500 text-sm">https://www.instagram.com/{v?.username}</a>
 															</div>
 														</div>
 													</div>
 												</td>
-												<td className="whitespace-nowrap pr-5 text-sm text-white text-end">
-													{v.max_value}
+												<td className="whitespace-nowrap pr-5 text-sm dark:text-white text-end">
+													{scoreFormatter(v.max_value)}
 												</td>
 											</tr>
 										);
