@@ -82,6 +82,36 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 								chart.ctx.shadowBlur = 0;
 							},
 						},
+						{
+							id: "medianLine",
+							afterDraw(chart) {
+								const {ctx, chartArea: {top, bottom, left, right}, scales: {y}} = chart;
+
+								const median = datasets.reduce((sum, dataset) => {
+									const total = dataset.data.reduce((acc, val) => acc + val, 0);
+									return sum + total / dataset.data.length;
+								}, 0) / datasets.length;
+
+								const yPos = y.getPixelForValue(median);
+
+								ctx.save();
+								ctx.beginPath();
+								ctx.moveTo(left, yPos);
+								ctx.lineTo(right, yPos);
+								ctx.lineWidth = 3;
+								ctx.setLineDash([5, 5]);
+								ctx.strokeStyle = "#FF0000";
+								ctx.stroke();
+								ctx.restore();
+
+								ctx.fillStyle = "#FFFFFF";
+								ctx.fillRect(left + 5, yPos - 20, 100, 20);
+
+								ctx.fillStyle = "#FF0000"; // Text color
+								ctx.font = "bold 14px Arial";
+								ctx.fillText(`Median: ${median.toFixed(2)}`, left + 10, yPos - 5);
+							},
+						},
 					],
 					data: {
 						labels: labels,
@@ -108,7 +138,6 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 								ticks: {
 									callback: function (value, index, ticks) {
 										return `${moment(labels[index]).format("DD")}`;
-										//\n${moment(labels[index]).format("MMM YYYY")}
 									},
 								},
 							},
@@ -124,6 +153,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 						},
 					},
 				});
+
 
 				setFairScoreChart(newChart);
 			}
@@ -156,10 +186,28 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 			datasetsBuilderOption,
 		);
 
-		const datasetsWithColor = datasetsBuilded?.map((v: any) => {
+		// const datasetsWithColor = datasetsBuilded?.map((v: any) => {
+		// 	return {
+		// 		...v,
+		// 		backgroundColor: createGradient(chartRef),
+		// 	};
+		// });
+
+		const generateColors = (index) => {
+			const primaryColors = [
+				"#FFA500", "#FFD700", "#FF4500", "#DA70D6", "#BA55D3", "#9370DB", "#8A2BE2", "#6A5ACD", "#7B68EE", "#483D8B",
+				"#D2691E", "#CD853F", "#F4A460", "#DEB887", "#BC8F8F", "#8B4513", "#A0522D", "#D2B48C", "#F0E68C", "#FFE4B5"
+			];
+
+			return index < primaryColors.length ? primaryColors[index] : "#BDC3C7";
+		};
+
+		const datasetsWithColor = datasetsBuilded?.map((v: any, index: number) => {
 			return {
 				...v,
 				backgroundColor: createGradient(chartRef),
+				borderColor: generateColors(index),
+				pointBackgroundColor: generateColors(index),
 			};
 		});
 
@@ -167,7 +215,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 		drawChart(labels, datasetsWithColor);
 		// setPermaOptions(options);
 		// setSelectedOptions(options);
-	}, [fairScoreData, selectedOptions]);
+	}, [fairScoreData, selectedOptions, period.startDate, period.endDate]);
 
 	useEffect(() => {
 		if (!permaOptions || permaOptions.length === 0) {

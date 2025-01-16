@@ -11,7 +11,6 @@ import {scoreFormatter} from "@/utils/numberFormatter";
 const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairRankingData, setFairRankingData] = useState(null);
-	const [filteredData, setFilteredData] = useState<any[]>([]);
 
 	const getFairRanking = async (payload) => {
 		setLoading(true);
@@ -44,29 +43,32 @@ const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 						<OurLoading/>
 					</div>
 					:
-					fairRankingData?.length
-						?
-						<>
-							<div
-								className="flex items-center justify-between border-b border-bgray-300 px-5 py-3 dark:border-darkblack-400">
-								<h3 className="text-xl font-bold text-bgray-900 dark:text-white">Top Ranking</h3>
-								<div className="date-filter relative">
-									<button type="button" className="flex items-center space-x-1">
+
+					<>
+						<div
+							className="flex items-center justify-between border-b border-bgray-300 px-5 py-3 dark:border-darkblack-400">
+							<h3 className="text-xl font-bold text-bgray-900 dark:text-white">Top Ranking</h3>
+							<div className="date-filter relative">
+								<button type="button" className="flex items-center space-x-1">
 									<span
 										className="text-base font-semibold text-bgray-900 dark:text-bgray-50">Score</span>
-									</button>
-								</div>
+								</button>
 							</div>
-							<div className="overflow-x-auto">
-								<table className="table-auto w-full overflow-y-scroll">
-									<tbody>
-									{fairRankingData?.map((v: any, key: number) => {
-										return (
-											<tr
-												key={key}
-												className="h-[20px] bg-white dark:bg-darkblack-600 cursor-pointer hover:bg-gray-300 dark:hover:bg-bgray-800"
-											>
-												<td className="whitespace-nowrap px-4 text-sm font-medium w-auto">
+						</div>
+						{
+							fairRankingData?.length
+								?
+								<div
+									className="overflow-x-auto">
+									<table className="table-auto w-full overflow-y-scroll">
+										<tbody>
+										{fairRankingData?.map((v: any, key: number) => {
+											return (
+												<tr
+													key={key}
+													className="h-[20px] bg-white dark:bg-darkblack-600 cursor-pointer hover:bg-gray-300 dark:hover:bg-bgray-800"
+												>
+													<td className="whitespace-nowrap px-4 text-sm font-medium w-auto">
 						<span>
 						<svg
 							style={{transform: key < 3 ? 'scale(1.5)' : 'none'}}
@@ -84,43 +86,44 @@ const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 							/>
 							</svg>
 						</span>
-												</td>
-												<td className="whitespace-nowrap text-sm text-gray-500 lg:w-auto flex-end">
-													<div className="flex items-center gap-5">
-														{/*<div className="h-[35px] w-[35px]">*/}
-														{/*	<img*/}
-														{/*		className="w-full rounded-lg object-cover"*/}
-														{/*		src="assets/images/avatar/user-1.png"*/}
-														{/*		alt=""*/}
-														{/*	/>*/}
-														{/*</div>*/}
-														<div className="flex-1">
-															<h4 className="text-sm font-bold text-bgray-900 dark:text-white">{v?.username}</h4>
-															<div>
-																{/*<span className="text-sm font-medium text-bgray-700 dark:text-bgray-50">Finance managers • </span>*/}
-																<a
-																	href={`https://www.instagram.com/${v?.username}`}
-																	target="_blank"
-																	rel="noopener noreferrer"
-																	className="text-gray-500 text-sm">https://www.instagram.com/{v?.username}</a>
+													</td>
+													<td className="whitespace-nowrap text-sm text-gray-500 lg:w-auto flex-end">
+														<div className="flex items-center gap-5">
+															{/*<div className="h-[35px] w-[35px]">*/}
+															{/*	<img*/}
+															{/*		className="w-full rounded-lg object-cover"*/}
+															{/*		src="assets/images/avatar/user-1.png"*/}
+															{/*		alt=""*/}
+															{/*	/>*/}
+															{/*</div>*/}
+															<div className="flex-1">
+																<h4 className="text-sm font-bold text-bgray-900 dark:text-white">{v?.username}</h4>
+																<div>
+																	{/*<span className="text-sm font-medium text-bgray-700 dark:text-bgray-50">Finance managers • </span>*/}
+																	<a
+																		href={`https://www.instagram.com/${v?.username}`}
+																		target="_blank"
+																		rel="noopener noreferrer"
+																		className="text-gray-500 text-sm">https://www.instagram.com/{v?.username}</a>
+																</div>
 															</div>
 														</div>
-													</div>
-												</td>
-												<td className="whitespace-nowrap pr-5 text-sm dark:text-white text-end">
-													{scoreFormatter(v.max_value)}
-												</td>
-											</tr>
-										);
-									})}
-									</tbody>
-								</table>
-							</div>
-						</>
-						:
-						<div className={`flex items-center justify-center h-full`}>
-							<OurEmptyData width={150}/>
-						</div>
+													</td>
+													<td className="whitespace-nowrap pr-5 text-sm dark:text-white text-end">
+														{scoreFormatter(v.max_value)}
+													</td>
+												</tr>
+											);
+										})}
+										</tbody>
+									</table>
+								</div>
+								:
+								<div className={`flex items-center justify-center h-full flex-wrap`}>
+									<OurEmptyData width={150}/>
+								</div>
+						}
+					</>
 			}
 		</div>
 	)

@@ -55,7 +55,7 @@ export const buildDatasets = (groupedData, labels, options: any) => {
 			pointBorderWidth: 4,
 			borderWidth: 2,
 			fill: true,
-			tension: 0.4,
+			tension: 0,
 		};
 	});
 
@@ -67,7 +67,8 @@ export const createGradient = (chartRef) => {
 	if (!chartRef?.current) return "#22C55E";
 	const ctx = chartRef.current.getContext("2d");
 	const gradient = ctx.createLinearGradient(0, 0, 0, 450);
-	gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
-	gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
+	// gradient.addColorStop(0, "rgba(34, 197, 94, 0.41)");
+	// gradient.addColorStop(0.6, "rgba(255, 255, 255, 0)");
 	return gradient;
 };
+
