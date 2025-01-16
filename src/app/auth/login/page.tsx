@@ -155,7 +155,7 @@ const Login = () => {
 								</div>
 								<a
 									// onClick={() => redirect('/perform')} //serverside tidak bisa handle load script
-									href="/perform"
+									href={`${process.env.NEXT_PUBLIC_BASE_PATH}/perform`}
 									className="py-3.5 flex items-center justify-center text-white font-bold bg-success-300 hover:bg-success-400 transition-all rounded-lg w-full"
 								>
 									Sign In
