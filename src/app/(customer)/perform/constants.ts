@@ -7,6 +7,7 @@ export type TFairDetailBar = {
 		startDate: Date | string | null,
 		endDate: Date | string | null,
 	};
+	options: any;
 }
 
 export type TTopRanking = {

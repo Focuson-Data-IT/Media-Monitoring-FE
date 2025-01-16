@@ -43,7 +43,7 @@ const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 						<OurLoading/>
 					</div>
 					:
-					filteredData?.length
+					fairRankingData?.length
 						?
 						<>
 							<div

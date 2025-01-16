@@ -93,7 +93,7 @@ const OurSelect: React.FC<TOurSelect> = ({
 											 disabled,
 											 setParentSelectedOption = null,
 										 }) => {
-	const [selectedOptions, setSelectedOptions] = useState<any[]>(
+	const [selectedOptions, setSelectedOptions] = useState<any>(
 		options || [""],
 	);
 

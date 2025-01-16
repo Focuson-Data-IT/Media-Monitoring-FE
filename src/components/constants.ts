@@ -5,7 +5,8 @@ export type TPeriodInput = {
 
 export type TOurSelect = {
 	options: { label: string, value: string } | null;
-	// disabled: boolean;
+	disabled: boolean;
+	permaOptions: any;
 	setParentSelectedOption: any;
 }
 

@@ -35,12 +35,8 @@ export const groupDataByUsername = (data) => {
 
 	return groupedByUsername;
 };
-export const buildDatasets = (groupedData, labels, options = null) => {
-	// filter groupedData yang hanya ada di list of array options?.filterByUsername
-
-	const filteredData = Object.entries(groupedData).filter(([username]) =>
-		options?.filterByUsername.length === 0 || options?.filterByUsername.includes(username)
-	);
+export const buildDatasets = (groupedData, labels, options: any) => {
+	const filteredData: any = Object.entries(groupedData).filter(([username]: any) => options?.filterByUsername?.length === 0 || options?.filterByUsername?.includes(username));
 
 	const datasets = filteredData.map(([username, userData]) => {
 		const dataWithZeroes = labels.map((label) => {

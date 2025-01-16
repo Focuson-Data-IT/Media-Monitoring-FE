@@ -10,10 +10,10 @@ import OurLoading from "@/components/OurLoading";
 import OurEmptyData from "@/components/OurEmptyData";
 import OurSelect from "@/components/OurSelect";
 
-const FairScoreChart: React.FC<{ setParentPeriod: void, setParentSelectedOption: void }> = ({
-																								setParentPeriod = null,
-																								setParentSelectedOption = null
-																							}) => {
+const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: any }> = ({
+																							  setParentPeriod = (period: any) => null,
+																							  setParentSelectedOption = (options: any) => null
+																						  }) => {
 	const chartRef = useRef<HTMLCanvasElement | null>(null);
 
 	const [period, setPeriod] = useState<{
@@ -67,64 +67,66 @@ const FairScoreChart: React.FC<{ setParentPeriod: void, setParentSelectedOption:
 				fairScoreChart.destroy();
 			}
 
-			const newChart: any = new Chart(ctx, {
-				type: "line",
-				plugins: [
-					{
-						id: "fairScoreCanvas",
-						beforeDatasetsDraw(chart) {
-							chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
-							chart.ctx.shadowBlur = 8;
+			if (ctx) {
+				const newChart: any = new Chart(ctx, {
+					type: "line",
+					plugins: [
+						{
+							id: "fairScoreCanvas",
+							beforeDatasetsDraw(chart) {
+								chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
+								chart.ctx.shadowBlur = 8;
+							},
+							afterDatasetsDraw(chart) {
+								chart.ctx.shadowColor = "rgba(0, 0, 0, 0)";
+								chart.ctx.shadowBlur = 0;
+							},
 						},
-						afterDatasetsDraw(chart) {
-							chart.ctx.shadowColor = "rgba(0, 0, 0, 0)";
-							chart.ctx.shadowBlur = 0;
+					],
+					data: {
+						labels: labels,
+						datasets: datasets,
+					},
+					options: {
+						interaction: {
+							mode: "index",
+							axis: "x",
+							intersect: false,
 						},
-					},
-				],
-				data: {
-					labels: labels,
-					datasets: datasets,
-				},
-				options: {
-					interaction: {
-						mode: "index",
-						axis: "x",
-						intersect: false,
-					},
-					maintainAspectRatio: false,
-					responsive: true,
-					scales: {
-						y: {
-							beginAtZero: true,
-							ticks: {
-								callback(value) {
-									return `${value}K `;
+						maintainAspectRatio: false,
+						responsive: true,
+						scales: {
+							y: {
+								beginAtZero: true,
+								ticks: {
+									callback(value) {
+										return `${value}K `;
+									},
+								},
+							},
+							x: {
+								ticks: {
+									callback: function (value, index, ticks) {
+										return `${moment(labels[index]).format("DD")}`;
+										//\n${moment(labels[index]).format("MMM YYYY")}
+									},
 								},
 							},
 						},
-						x: {
-							ticks: {
-								callback: function (value, index, ticks) {
-									return `${moment(labels[index]).format("DD")}`;
-									//\n${moment(labels[index]).format("MMM YYYY")}
-								},
+						plugins: {
+							legend: {position: "top", display: false},
+						},
+						elements: {
+							point: {
+								radius: 0,
+								hoverRadius: 4,
 							},
 						},
 					},
-					plugins: {
-						legend: {position: "top", display: false},
-					},
-					elements: {
-						point: {
-							radius: 0,
-							hoverRadius: 4,
-						},
-					},
-				},
-			});
+				});
 
-			setFairScoreChart(newChart);
+				setFairScoreChart(newChart);
+			}
 		}
 	};
 
@@ -138,7 +140,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: void, setParentSelectedOption:
 		const dateArray = buildLabels(period.startDate, period.endDate);
 		const labels = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
 
-		const filterByUsername = selectedOptions?.map((v: any) => {
+		const filterByUsername: any = selectedOptions?.map((v: any) => {
 			return v?.value;
 		});
 
