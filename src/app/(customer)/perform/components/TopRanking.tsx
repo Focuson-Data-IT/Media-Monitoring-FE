@@ -7,9 +7,10 @@ import {TTopRanking} from "@/app/(customer)/perform/constants";
 import OurLoading from "@/components/OurLoading";
 import OurEmptyData from "@/components/OurEmptyData";
 
-const TopRanking: React.FC<TTopRanking> = ({period}) => {
+const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairRankingData, setFairRankingData] = useState(null);
+	const [filteredData, setFilteredData] = useState<any[]>([]);
 
 	const getFairRanking = async (payload) => {
 		setLoading(true);
@@ -25,6 +26,13 @@ const TopRanking: React.FC<TTopRanking> = ({period}) => {
 		})
 	}, [period])
 
+	// useEffect(() => {
+	// 	const result = fairRankingData?.filter((v) =>
+	// 		options?.some((option) => option.value === v.username)
+	// 	);
+	// 	setFilteredData(result || []);
+	// }, [fairRankingData, options]);
+
 	return (
 		<div
 			className={`${loading ? 'bg-gray-200 animate-pulse' : ''} rounded-lg mb-12 bg-white dark:bg-darkblack-600 h-[400px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700 shadow-[4px_0_8px_rgba(0,0,0,0.05)]`}>
@@ -35,7 +43,7 @@ const TopRanking: React.FC<TTopRanking> = ({period}) => {
 						<OurLoading/>
 					</div>
 					:
-					fairRankingData?.length
+					filteredData?.length
 						?
 						<>
 							<div

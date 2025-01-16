@@ -1,51 +1,65 @@
-'use client'
+"use client";
 
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import Chart from "chart.js/auto";
 import moment from "moment";
 import request from "@/utils/request";
-import {buildDatasets, buildLabels, createGradient, groupDataByUsername} from "@/utils/chart";
+import {buildDatasets, buildLabels, createGradient, groupDataByUsername,} from "@/utils/chart";
 import OurDatePicker from "@/components/OurDatePicker";
 import OurLoading from "@/components/OurLoading";
 import OurEmptyData from "@/components/OurEmptyData";
 import OurSelect from "@/components/OurSelect";
 
-
-const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = null}) => {
+const FairScoreChart: React.FC<{ setParentPeriod: void, setParentSelectedOption: void }> = ({
+																								setParentPeriod = null,
+																								setParentSelectedOption = null
+																							}) => {
 	const chartRef = useRef<HTMLCanvasElement | null>(null);
 
-
-	const [period, setPeriod] = useState<{ startDate: Date | string | null, endDate: Date | string | null }>({
+	const [period, setPeriod] = useState<{
+		startDate: Date | string | null;
+		endDate: Date | string | null;
+	}>({
 		startDate: moment().toDate(),
-		endDate: moment().toDate()
-	})
+		endDate: moment().toDate(),
+	});
 
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairScoreData, setFairScoreData] = useState<any>(null);
+	const [datasets, setDatasets] = useState<any>(null);
 
 	const [fairScoreChart, setFairScoreChart] = useState<Chart | null>(null);
 
-	const [selectedOption, setSelectedOption] = useState<Array<{
-		label: string,
-		value: string
-	}> | null>(null)
+	const options = useMemo(() => {
+		return (
+			datasets?.map((v: any) => ({
+				label: v.label,
+				value: v.label,
+			})) || []
+		);
+	}, [datasets]);
 
-	const [options, setOptions] = useState<Array<{
-		label: string,
-		value: string
-	}> | null>(null)
+	// const [permaOptions, setPermaOptions] = useState([]);
 
-	const [labels, setLabels] = useState<any>(null);
-	const [datasets, setDatasets] = useState<any>(null);
+	const [selectedOptions, setSelectedOptions] = useState<Array<{
+		label: string;
+		value: string;
+	}> | null>(null);
 
+	const [permaOptions, setPermaOptions] = useState<Array<{
+		label: string;
+		value: string;
+	}> | null>(null);
 
 	const getFairScoreChartData = async (payload: any) => {
-		setLoading(true)
-		const response = await request.get(`/getFairScores?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
-		return response.data?.data;
-	}
+		setLoading(true);
+		const response = await request.get(
+			`/getFairScores?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`,
+		);
+		setFairScoreData(response.data?.data);
+	};
 
-	const drawChart = (labels, datasets) => {
+	const drawChart = (labels: any, datasets: any) => {
 		if (chartRef && chartRef.current) {
 			const ctx = chartRef.current?.getContext("2d");
 
@@ -85,14 +99,14 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 							beginAtZero: true,
 							ticks: {
 								callback(value) {
-									return `${value}`;
+									return `${value}K `;
 								},
 							},
 						},
 						x: {
 							ticks: {
 								callback: function (value, index, ticks) {
-									return `${moment(labels[index]).format("DD")}`
+									return `${moment(labels[index]).format("DD")}`;
 									//\n${moment(labels[index]).format("MMM YYYY")}
 								},
 							},
@@ -116,61 +130,50 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 
 	useEffect(() => {
 		getFairScoreChartData(period).then((v) => {
-			console.info(v)
-			setFairScoreData(v);
-
-			const dateArray = buildLabels(period.startDate, period.endDate);
-			const labelsData = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
-			setLabels(labelsData);
-
-
-			const filterByUsername = selectedOption?.map((v: any) => {
-				return v?.value;
-			})
-
-			let datasetsBuilderOption = {
-				filterByUsername: filterByUsername
-				// filterByUsername: null
-			}
-
-
-			const dataGroupedByUsername = groupDataByUsername(v);
-
-			let datasetsBuilded = buildDatasets(dataGroupedByUsername, labelsData, datasetsBuilderOption)
-
-			const datasetsWithColor = datasetsBuilded?.map((v: any) => {
-				return {
-					...v,
-					backgroundColor: createGradient(chartRef),
-				}
-			})
-			setDatasets(datasetsWithColor);
-		})
+			setLoading(false);
+		});
 	}, [period]);
 
 	useEffect(() => {
-		drawChart(labels, datasets);
-		setLoading(false);
-	}, [fairScoreData, selectedOption, datasets]);
+		const dateArray = buildLabels(period.startDate, period.endDate);
+		const labels = dateArray.map((date: any) => date.format("YYYY-MM-DD"));
 
-	// useEffect(() => {
-	// 	const buildOption = datasets?.map((v: any) => ({
-	// 		label: v.label,
-	// 		value: v.label,
-	// 	})) || [];
-	//
-	// 	setOptions(buildOption)
-	// }, [datasets]);
+		const filterByUsername = selectedOptions?.map((v: any) => {
+			return v?.value;
+		});
 
-	// useEffect(() => {
-	// 	const {datasets} = createChartPayload()
-	//
-	// 	const buildOption = datasets?.map((v: any) => ({
-	// 		label: v.label,
-	// 		value: v.label,
-	// 	})) || [];
-	// 	setOptions(buildOption)
-	// }, []);
+		let datasetsBuilderOption = {
+			filterByUsername: filterByUsername,
+		};
+
+		const dataGroupedByUsername = groupDataByUsername(fairScoreData);
+
+		let datasetsBuilded = buildDatasets(
+			dataGroupedByUsername,
+			labels,
+			datasetsBuilderOption,
+		);
+
+		const datasetsWithColor = datasetsBuilded?.map((v: any) => {
+			return {
+				...v,
+				backgroundColor: createGradient(chartRef),
+			};
+		});
+
+		setDatasets(datasetsBuilded);
+		drawChart(labels, datasetsWithColor);
+		// setPermaOptions(options);
+		// setSelectedOptions(options);
+	}, [fairScoreData, selectedOptions]);
+
+	useEffect(() => {
+		if (!permaOptions || permaOptions.length === 0) {
+			setPermaOptions(options);
+			setSelectedOptions(options);
+			setParentSelectedOption(options)
+		}
+	}, [options]);
 
 	return (
 		<div
@@ -178,61 +181,68 @@ const FairScoreChart: React.FC<{ setParentPeriod: void }> = ({setParentPeriod = 
 		>
 			<div className={`mb-2 flex items-center justify-between gap-5 p-3`}>
 				<div>
-						  <span
-							  className="text-sm font-medium text-bgray-600 dark:text-white"
-						  >FAIR Score</span
-						  >
+					<span className="text-sm font-medium text-bgray-600 dark:text-white">
+						FAIR Score
+					</span>
 					<div className="flex items-center space-x-2">
-						<h3
-							className="text-xl font-bold leading-[36px] text-bgray-900 dark:text-white sm:text-2xl"
-						>
-							{
-								period.startDate != null && period.endDate != null
-									?
-									<span>{moment(period.startDate).format("DD MMM YYYY")} {period.endDate ? ` - ${moment(period.endDate).format("DD MMM YYYY")}` : ''}</span>
-									:
-									''
-							}
+						<h3 className="text-xl font-bold leading-[36px] text-bgray-900 dark:text-white sm:text-2xl">
+							{period.startDate != null &&
+							period.endDate != null ? (
+								<span>
+									{moment(period.startDate).format(
+										"DD MMM YYYY",
+									)}{" "}
+									{period.endDate
+										? ` - ${moment(period.endDate).format("DD MMM YYYY")}`
+										: ""}
+								</span>
+							) : (
+								""
+							)}
 						</h3>
 						{/*<span className="text-sm font-medium text-success-300">+20%</span>*/}
 					</div>
 				</div>
 				<div className="date-filter relative flex flex-row gap-5">
-					<OurDatePicker applyCallback={(v) => {
-						setPeriod({
-							startDate: v[0],
-							endDate: v[1],
-						});
-						setParentPeriod({
-							startDate: v[0],
-							endDate: v[1],
-						});
-					}}/>
-					{/*<OurSelect permaOptions={permaOptions} options={options} disabled={false}*/}
-					{/*		   setSelectedOption={setSelectedOption}/>*/}
-					<OurSelect options={options} disabled={false}
-							   setSelectedOption={setSelectedOption}/>
+					<OurDatePicker
+						applyCallback={(v) => {
+							setPeriod({
+								startDate: v[0],
+								endDate: v[1],
+							});
+							setParentPeriod({
+								startDate: v[0],
+								endDate: v[1],
+							});
+						}}
+					/>
+					<OurSelect
+						permaOptions={permaOptions}
+						options={options}
+						disabled={false}
+						setParentSelectedOption={setSelectedOptions}
+					/>
 				</div>
 			</div>
-			{
-				loading
-					?
-					<div className={`flex items-center justify-center h-full`}>
-						<OurLoading/>
-					</div>
-					:
-					fairScoreData?.length
-						?
-						<div className={`w-full`}>
-							<canvas id="fairScoreCanvas" ref={chartRef} height="280"></canvas>
-						</div>
-						:
-						<div className={`flex items-center justify-center h-full`}>
-							<OurEmptyData width={150}/>
-						</div>
-			}
+			{loading ? (
+				<div className={`flex items-center justify-center h-full`}>
+					<OurLoading/>
+				</div>
+			) : fairScoreData?.length ? (
+				<div className={`w-full`}>
+					<canvas
+						id="fairScoreCanvas"
+						ref={chartRef}
+						height="280"
+					></canvas>
+				</div>
+			) : (
+				<div className={`flex items-center justify-center h-full`}>
+					<OurEmptyData width={150}/>
+				</div>
+			)}
 		</div>
-	)
-}
+	);
+};
 
 export default FairScoreChart;

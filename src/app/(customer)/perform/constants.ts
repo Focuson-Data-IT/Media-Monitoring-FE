@@ -10,5 +10,6 @@ export type TFairDetailBar = {
 }
 
 export type TTopRanking = {
-	period: TPeriodInput
+	period: TPeriodInput,
+	options: any
 }
