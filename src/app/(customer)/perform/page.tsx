@@ -21,7 +21,7 @@ const Perform = () => {
 
 	return (
 		<>
-			<h1 className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">Competitor</h1>
+			<h1 className="text-2xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">Competitor</h1>
 			<div className="flex flex-col lg:flex-row lg:space-x-6 w-full">
 				{/* FairScoreChart - 70% pada lg */}
 				<div className="mb-6 w-full lg:mb-0 lg:flex-[7]">
@@ -35,7 +35,7 @@ const Perform = () => {
 				</div>
 			</div>
 
-			<h1 className="text-xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">Fair</h1>
+			<h1 className="text-2xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">FAIR</h1>
 			<div className="2xl:flex 2xl:space-x-[48px] mb-5">
 				<div className="w-full 2xl:flex-1 mb-5">
 					<FairDetailBar label={"Followers"} unit={"K"} period={parentPeriod}
