@@ -1,5 +1,7 @@
 'use client'
 
+import "dotenv/config";
+
 const Login = () => {
 	return (
 		<>
