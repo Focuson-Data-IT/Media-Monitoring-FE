@@ -573,6 +573,48 @@ const PostsTable = ({period, platform = 'Instagram'}) => {
 														</p>
 													</div>
 												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.comments}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.playCount}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.shareCount}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.collectCount}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.downloadCount}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p className="text-base font-medium text-bgray-900 dark:text-white">
+															{v?.downloadCount / 100}
+														</p>
+													</div>
+												</td>
 												<td className="py-5">
 													<div className="flex justify-center">
 														<button type="button">
