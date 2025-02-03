@@ -300,7 +300,10 @@ const Navbar = () => {
                                     </svg>
                                   </span>
 														</div>
-														<div className="flex-1">
+														<div className="flex-1" onClick={() => {
+															localStorage.removeItem('user');
+															window.location.href = '/login';
+														}}>
                                   <span className="text-sm font-semibold"
 								  >Log Out</span
 								  >
