@@ -70,29 +70,28 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 			}
 
 			if (ctx) {
+				const allDataPoints = datasets.flatMap((dataset) => dataset.data);
+
+				const sortedData = [...allDataPoints].sort((a, b) => a - b);
+				const median =
+					sortedData.length % 2 === 0
+						? (sortedData[sortedData.length / 2 - 1] + sortedData[sortedData.length / 2]) / 2
+						: sortedData[Math.floor(sortedData.length / 2)];
+
+				const totalSum = allDataPoints.reduce((sum, val) => sum + val, 0);
+				const average = totalSum / allDataPoints.length;
+
 				const newChart: any = new Chart(ctx, {
 					type: "line",
 					plugins: [
 						{
-							id: "fairScoreCanvas",
-							beforeDatasetsDraw(chart) {
-								chart.ctx.shadowColor = "rgba(37, 99, 235, 0.14)";
-								chart.ctx.shadowBlur = 8;
-							},
-							afterDatasetsDraw(chart) {
-								chart.ctx.shadowColor = "rgba(0, 0, 0, 0)";
-								chart.ctx.shadowBlur = 0;
-							},
-						},
-						{
 							id: "medianLine",
 							afterDraw(chart) {
-								const { ctx, chartArea: { left, right }, scales: { y } } = chart;
-
-								const median = datasets.reduce((sum, dataset) => {
-									const total = dataset.data.reduce((acc, val) => acc + val, 0);
-									return sum + total / dataset.data.length;
-								}, 0) / datasets.length;
+								const {
+									ctx,
+									chartArea: { left, right },
+									scales: { y },
+								} = chart;
 
 								const yPos = y.getPixelForValue(median);
 
@@ -100,57 +99,51 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 								ctx.beginPath();
 								ctx.moveTo(left, yPos);
 								ctx.lineTo(right, yPos);
-								ctx.lineWidth = 3;
+								ctx.lineWidth = 2;
 								ctx.setLineDash([5, 5]);
 								ctx.strokeStyle = "#FF0000"; // Warna merah untuk median
 								ctx.stroke();
 								ctx.restore();
 
 								ctx.fillStyle = "#FFFFFF";
-								ctx.fillRect(left + 5, yPos - 20, 100, 20);
+								ctx.fillRect(left + 5, yPos - 15, 80, 15);
 
 								ctx.fillStyle = "#FF0000";
-								ctx.font = "bold 14px Arial";
-								ctx.fillText(`Median: ${median.toFixed(2)}`, left + 10, yPos - 5);
+								ctx.font = "bold 12px Arial";
+								ctx.fillText(`Median: ${median.toFixed(2)}`, left + 10, yPos - 3);
 							},
 						},
 						{
 							id: "averageLine",
 							afterDraw(chart) {
-								const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+								const {
+									ctx,
+									chartArea: { left, right },
+									scales: { y },
+								} = chart;
 
-								const average = datasets.reduce((sum, dataset) => {
-									const total = dataset.data.reduce((acc, val) => acc + val, 0);
-									return sum + total;
-								}, 0) / datasets.reduce((count, dataset) => count + dataset.data.length, 0);
-
-								// **Menaikkan posisi average agar selalu lebih tinggi dari median**
-								const median = datasets.reduce((sum, dataset) => {
-									const total = dataset.data.reduce((acc, val) => acc + val, 0);
-									return sum + total / dataset.data.length;
-								}, 0) / datasets.length;
-
-								const adjustedAverage = Math.max(average, median + 10); // Menjamin average di atas median
-								const yPos = y.getPixelForValue(adjustedAverage);
+								const yPos = y.getPixelForValue(average);
 
 								ctx.save();
 								ctx.beginPath();
 								ctx.moveTo(left, yPos);
 								ctx.lineTo(right, yPos);
-								ctx.lineWidth = 3;
+								ctx.lineWidth = 2;
 								ctx.setLineDash([5, 5]);
-								ctx.strokeStyle = "#008000"; // Warna hijau untuk average
+								ctx.strokeStyle = "#008000"; // Warna hijau untuk rata-rata
 								ctx.stroke();
 								ctx.restore();
 
+								// Pindahkan label rata-rata ke kanan
+								const labelWidth = 100;
 								ctx.fillStyle = "#FFFFFF";
-								ctx.fillRect(left + 5, yPos - 20, 120, 20);
+								ctx.fillRect(right - labelWidth - 5, yPos - 15, labelWidth, 15);
 
 								ctx.fillStyle = "#008000";
-								ctx.font = "bold 14px Arial";
-								ctx.fillText(`Average: ${adjustedAverage.toFixed(2)}`, left + 10, yPos - 5);
+								ctx.font = "bold 12px Arial";
+								ctx.fillText(`Average: ${average.toFixed(2)}`, right - labelWidth, yPos - 3);
 							},
-						}
+						},
 					],
 					data: {
 						labels: labels,

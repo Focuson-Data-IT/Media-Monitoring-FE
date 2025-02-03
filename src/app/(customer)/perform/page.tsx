@@ -55,7 +55,7 @@ const Perform = () => {
 
 			{/* Main content */}
 			<h1 className="text-2xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">
-				Competitor {selectedPlatform}
+				Competitor
 			</h1>
 
 			<div className="flex flex-col lg:flex-row lg:space-x-6 w-full">
@@ -116,6 +116,9 @@ const Perform = () => {
 			</div>
 
 			<div className="2xl:flex 2xl:space-x-[48px] mb-5">
+				<h1 className="text-2xl font-bold text-bgray-900 dark:text-bgray-50 lg:text-3xl lg:leading-[36.4px] mb-5">
+					{selectedPlatform} Posts Table
+				</h1>
 				<PostsTable period={parentPeriod} platform={selectedPlatform}/>
 			</div>
 		</>

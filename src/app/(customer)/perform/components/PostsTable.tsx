@@ -11,7 +11,7 @@ const PostsTable = ({period, platform = 'Instagram'}) => {
 
 	const getPosts = async () => {
 		setLoading(true);
-		const response = await request.get(`/getAllData?kategori=${user?.username}&start_date=${moment(period?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(period?.endDate || period?.startDate)?.format("YYYY-MM-DD")}`);
+		const response = await request.get(`/getAllPost?kategori=${user?.username}&start_date=${moment(period?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(period?.endDate || period?.startDate)?.format("YYYY-MM-DD")}`);
 
 		if (response.status === 200) {
 			setPosts(response.data.data);
@@ -27,6 +27,7 @@ const PostsTable = ({period, platform = 'Instagram'}) => {
 	return (
 
 		<section className="mb-6 2xl:mb-0 2xl:flex-1 shadow-[4px_0_8px_rgba(0,0,0,0.05)]">
+
 			<div
 				className="w-full rounded-lg bg-white px-[24px] py-[20px] dark:bg-darkblack-600"
 			>

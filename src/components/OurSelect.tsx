@@ -123,7 +123,7 @@ const OurSelect: React.FC<TOurSelect> = ({
 				ClearIndicator: () => null,
 				MultiValueContainer: () => null,
 			}}
-			className="z-10"
+			className="z-10 text-sm"
 			options={permaOptions}
 			isMulti
 			value={selectedOptions}

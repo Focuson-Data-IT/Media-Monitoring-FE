@@ -35,10 +35,26 @@ export const groupDataByUsername = (data) => {
 
 	return groupedByUsername;
 };
-export const buildDatasets = (groupedData, labels, options: any) => {
-	const filteredData: any = Object.entries(groupedData).filter(([username]: any) => options?.filterByUsername?.length === 0 || options?.filterByUsername?.includes(username));
 
-	const datasets = filteredData.map(([username, userData]) => {
+export const buildDatasets = (groupedData, labels, options: any) => {
+	// Filter data berdasarkan username yang diinginkan
+	const filteredData: any = Object.entries(groupedData).filter(
+		([username]: any) =>
+			options?.filterByUsername?.length === 0 ||
+			options?.filterByUsername?.includes(username)
+	);
+
+	// Menghitung total nilai (value) dari masing-masing pengguna
+	const sortedData = filteredData
+		.map(([username, userData]) => {
+			const totalValue = userData.reduce((sum, item) => sum + item.value, 0);
+			return { username, userData, totalValue };
+		})
+		.sort((a, b) => b.totalValue - a.totalValue) // Urutkan dari terbesar ke terkecil
+		.slice(0, 10); // Ambil hanya 10 pengguna teratas
+
+	// Membuat dataset hanya untuk 10 pengguna dengan nilai terbesar
+	const datasets = sortedData.map(({ username, userData }) => {
 		const dataWithZeroes = labels.map((label) => {
 			const dataPoint = userData.find((item) =>
 				moment(item.date, "YYYY-MM-DD").isSame(moment(label, "YYYY-MM-DD"))
