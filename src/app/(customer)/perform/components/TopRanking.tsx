@@ -9,13 +9,15 @@ import OurEmptyData from "@/components/OurEmptyData";
 import {scoreFormatter} from "@/utils/numberFormatter";
 
 const TopRanking: React.FC<TTopRanking> = ({period, options = null}) => {
+	const user = JSON.parse(localStorage.getItem('user')) || null;
+
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairRankingData, setFairRankingData] = useState(null);
 
 	const getFairRanking = async (payload) => {
 		setLoading(true);
 
-		const response = await request.get(`/getFairRanking?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
+		const response = await request.get(`/getFairRanking?kategori=${user?.username}&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`)
 
 		setFairRankingData(response.data?.data);
 	}

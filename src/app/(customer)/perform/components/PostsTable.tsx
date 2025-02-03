@@ -1,10 +1,36 @@
-const PostsTable = () => {
+import React, {useEffect, useState} from "react";
+import request from "@/utils/request";
+import OurEmptyData from "@/components/OurEmptyData";
+import moment from "moment";
+import OurLoading from "@/components/OurLoading";
+
+const PostsTable = ({period, platform = 'Instagram'}) => {
+	const user = JSON.parse(localStorage.getItem('user')) || null;
+	const [posts, setPosts] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	const getPosts = async () => {
+		setLoading(true);
+		const response = await request.get(`/getAllData?kategori=${user?.username}&start_date=${moment(period?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(period?.endDate || period?.startDate)?.format("YYYY-MM-DD")}`);
+
+		if (response.status === 200) {
+			setPosts(response.data.data);
+		}
+	}
+
+	useEffect(() => {
+		getPosts().then(() => {
+			setLoading(false);
+		})
+	}, [period]);
+
 	return (
+
 		<section className="mb-6 2xl:mb-0 2xl:flex-1 shadow-[4px_0_8px_rgba(0,0,0,0.05)]">
 			<div
 				className="w-full rounded-lg bg-white px-[24px] py-[20px] dark:bg-darkblack-600"
 			>
-				<div className="flex flex-col space-y-5">
+				<div className="max-h-[500px] flex flex-col space-y-5">
 					<div className="table-content w-full overflow-x-auto">
 						<table className="w-full">
 							<thead>
@@ -470,131 +496,154 @@ const PostsTable = () => {
 								<th className="py-5"></th>
 							</tr>
 							</thead>
-							<tbody>
-							<tr
-								className="border-b border-bgray-300 dark:border-darkblack-400"
-							>
-								<td className="px-6 py-5 xl:px-0">
-									<div className="flex w-full items-center space-x-2.5">
-										<div
-											className="h-10 w-10 overflow-hidden rounded-full"
-										>
-											<img
-												src="./assets/images/avatar/ha-1.png"
-												alt="avatar"
-												className="h-full w-full object-cover"
-											/>
-										</div>
-										<p
-											className="text-base font-semibold text-bgray-900 dark:text-white"
-										>
-											Devon Lane
-										</p>
+
+
+							<tbody className={`${loading ? 'bg-gray-200 animate-pulse' : ''} h-[500px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-700`}>
+							{
+
+								loading
+									?
+									<div className={`flex items-center justify-center h-full w-full`}>
+										<OurLoading/>
 									</div>
-								</td>
-								<td className="px-6 py-5 xl:px-0">
-									<p
-										className="text-base font-medium text-bgray-900 dark:text-white text-sm"
-									>
-										Alhamdulillah @kpu_dki telah menetapkan Gubernur dan Wakil Gubernur Jakarta
-										terpilih. Acara hari ini dihadiri para saha...
-										<span>Original Post</span>
-									</p>
-								</td>
-								<td className="px-6 py-5 xl:px-0">
-									<p
-										className="text-base font-medium text-bgray-900 dark:text-white"
-									>
-										Thursday
-										09 Jan 2025
-										8:16 PM
-									</p>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>0</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
-									<div className="flex w-full items-center">
-										<p
-											className="text-base font-medium text-bgray-900 dark:text-white"
-										>110</p>
-									</div>
-								</td>
-								<td className="py-5">
-									<div className="flex justify-center">
-										<button type="button">
-											<svg
-												width="18"
-												height="4"
-												viewBox="0 0 18 4"
-												fill="none"
-												xmlns="http://www.w3.org/2000/svg"
+									:
+								posts && posts?.length > 0
+									?
+									posts.filter((v) => v.platform === platform).map((v, key) => {
+										return (
+											<tr
+												key={key}
+												className="border-b border-bgray-300 dark:border-darkblack-400"
 											>
-												<path
-													d="M8 2.00024C8 2.55253 8.44772 3.00024 9 3.00024C9.55228 3.00024 10 2.55253 10 2.00024C10 1.44796 9.55228 1.00024 9 1.00024C8.44772 1.00024 8 1.44796 8 2.00024Z"
-													stroke="#A0AEC0"
-													strokeWidth="2"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-												/>
-												<path
-													d="M1 2.00024C1 2.55253 1.44772 3.00024 2 3.00024C2.55228 3.00024 3 2.55253 3 2.00024C3 1.44796 2.55228 1.00024 2 1.00024C1.44772 1.00024 1 1.44796 1 2.00024Z"
-													stroke="#A0AEC0"
-													strokeWidth="2"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-												/>
-												<path
-													d="M15 2.00024C15 2.55253 15.4477 3.00024 16 3.00024C16.5523 3.00024 17 2.55253 17 2.00024C17 1.44796 16.5523 1.00024 16 1.00024C15.4477 1.00024 15 1.44796 15 2.00024Z"
-													stroke="#A0AEC0"
-													strokeWidth="2"
-													strokeLinecap="round"
-													strokeLinejoin="round"
-												/>
-											</svg>
-										</button>
+												<td className="px-6 py-5 xl:px-0">
+													<div className="flex w-full items-center space-x-2.5">
+														<div
+															className="h-10 w-10 overflow-hidden rounded-full"
+														>
+															<img
+																src="./assets/images/avatar/ha-1.png"
+																alt="avatar"
+																className="h-full w-full object-cover"
+															/>
+														</div>
+														<p
+															className="text-base font-semibold text-bgray-900 dark:text-white"
+														>
+															{v?.username}
+														</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:px-0">
+													<p
+														className="text-base font-medium text-bgray-900 dark:text-white text-sm"
+													>
+														Alhamdulillah @kpu_dki telah menetapkan Gubernur dan Wakil Gubernur Jakarta
+														terpilih. Acara hari ini dihadiri para saha...
+														<span>Original Post</span>
+													</p>
+												</td>
+												<td className="px-6 py-5 xl:px-0">
+													<p
+														className="text-base font-medium text-bgray-900 dark:text-white"
+													>
+														Thursday
+														09 Jan 2025
+														8:16 PM
+													</p>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>0</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="px-6 py-5 xl:w-[165px] xl:px-0 text-end">
+													<div className="flex w-full items-center">
+														<p
+															className="text-base font-medium text-bgray-900 dark:text-white"
+														>110</p>
+													</div>
+												</td>
+												<td className="py-5">
+													<div className="flex justify-center">
+														<button type="button">
+															<svg
+																width="18"
+																height="4"
+																viewBox="0 0 18 4"
+																fill="none"
+																xmlns="http://www.w3.org/2000/svg"
+															>
+																<path
+																	d="M8 2.00024C8 2.55253 8.44772 3.00024 9 3.00024C9.55228 3.00024 10 2.55253 10 2.00024C10 1.44796 9.55228 1.00024 9 1.00024C8.44772 1.00024 8 1.44796 8 2.00024Z"
+																	stroke="#A0AEC0"
+																	strokeWidth="2"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																/>
+																<path
+																	d="M1 2.00024C1 2.55253 1.44772 3.00024 2 3.00024C2.55228 3.00024 3 2.55253 3 2.00024C3 1.44796 2.55228 1.00024 2 1.00024C1.44772 1.00024 1 1.44796 1 2.00024Z"
+																	stroke="#A0AEC0"
+																	strokeWidth="2"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																/>
+																<path
+																	d="M15 2.00024C15 2.55253 15.4477 3.00024 16 3.00024C16.5523 3.00024 17 2.55253 17 2.00024C17 1.44796 16.5523 1.00024 16 1.00024C15.4477 1.00024 15 1.44796 15 2.00024Z"
+																	stroke="#A0AEC0"
+																	strokeWidth="2"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																/>
+															</svg>
+														</button>
+													</div>
+												</td>
+											</tr>
+										)
+									})
+
+									:
+									<div className={`flex items-center justify-center h-[300px] align-center w-full`}>
+										<OurEmptyData width={100}/>
 									</div>
-								</td>
-							</tr>
+							}
 							</tbody>
 						</table>
 					</div>

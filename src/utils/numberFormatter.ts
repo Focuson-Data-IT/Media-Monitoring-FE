@@ -6,7 +6,7 @@ export const scoreFormatter = (number) => {
 };
 
 export const followersValueFormatter = (number) => {
-	return number.toLocaleString("id-ID", {
+	return number?.toLocaleString("id-ID", {
 		minimumFractionDigits: 0,
 		maximumFractionDigits: 0
 	});

@@ -14,6 +14,8 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 																							  setParentPeriod = (period: any) => null,
 																							  setParentSelectedOption = (options: any) => null
 																						  }) => {
+	const user = JSON.parse(localStorage.getItem('user')) || null;
+
 	const chartRef = useRef<HTMLCanvasElement | null>(null);
 
 	const [period, setPeriod] = useState<{
@@ -54,7 +56,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 	const getFairScoreChartData = async (payload: any) => {
 		setLoading(true);
 		const response = await request.get(
-			`/getFairScores?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`,
+			`/getFairScores?kategori=${user?.username}&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`,
 		);
 		setFairScoreData(response.data?.data);
 	};
@@ -85,7 +87,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 						{
 							id: "medianLine",
 							afterDraw(chart) {
-								const {ctx, chartArea: {top, bottom, left, right}, scales: {y}} = chart;
+								const { ctx, chartArea: { left, right }, scales: { y } } = chart;
 
 								const median = datasets.reduce((sum, dataset) => {
 									const total = dataset.data.reduce((acc, val) => acc + val, 0);
@@ -100,18 +102,55 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 								ctx.lineTo(right, yPos);
 								ctx.lineWidth = 3;
 								ctx.setLineDash([5, 5]);
-								ctx.strokeStyle = "#FF0000";
+								ctx.strokeStyle = "#FF0000"; // Warna merah untuk median
 								ctx.stroke();
 								ctx.restore();
 
 								ctx.fillStyle = "#FFFFFF";
 								ctx.fillRect(left + 5, yPos - 20, 100, 20);
 
-								ctx.fillStyle = "#FF0000"; // Text color
+								ctx.fillStyle = "#FF0000";
 								ctx.font = "bold 14px Arial";
 								ctx.fillText(`Median: ${median.toFixed(2)}`, left + 10, yPos - 5);
 							},
 						},
+						{
+							id: "averageLine",
+							afterDraw(chart) {
+								const { ctx, chartArea: { left, right }, scales: { y } } = chart;
+
+								const average = datasets.reduce((sum, dataset) => {
+									const total = dataset.data.reduce((acc, val) => acc + val, 0);
+									return sum + total;
+								}, 0) / datasets.reduce((count, dataset) => count + dataset.data.length, 0);
+
+								// **Menaikkan posisi average agar selalu lebih tinggi dari median**
+								const median = datasets.reduce((sum, dataset) => {
+									const total = dataset.data.reduce((acc, val) => acc + val, 0);
+									return sum + total / dataset.data.length;
+								}, 0) / datasets.length;
+
+								const adjustedAverage = Math.max(average, median + 10); // Menjamin average di atas median
+								const yPos = y.getPixelForValue(adjustedAverage);
+
+								ctx.save();
+								ctx.beginPath();
+								ctx.moveTo(left, yPos);
+								ctx.lineTo(right, yPos);
+								ctx.lineWidth = 3;
+								ctx.setLineDash([5, 5]);
+								ctx.strokeStyle = "#008000"; // Warna hijau untuk average
+								ctx.stroke();
+								ctx.restore();
+
+								ctx.fillStyle = "#FFFFFF";
+								ctx.fillRect(left + 5, yPos - 20, 120, 20);
+
+								ctx.fillStyle = "#008000";
+								ctx.font = "bold 14px Arial";
+								ctx.fillText(`Average: ${adjustedAverage.toFixed(2)}`, left + 10, yPos - 5);
+							},
+						}
 					],
 					data: {
 						labels: labels,
@@ -143,7 +182,7 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 							},
 						},
 						plugins: {
-							legend: {position: "top", display: false},
+							legend: { position: "top", display: false },
 						},
 						elements: {
 							point: {
@@ -153,7 +192,6 @@ const FairScoreChart: React.FC<{ setParentPeriod: any, setParentSelectedOption: 
 						},
 					},
 				});
-
 
 				setFairScoreChart(newChart);
 			}

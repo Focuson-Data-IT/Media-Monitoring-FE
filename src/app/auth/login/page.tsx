@@ -1,8 +1,32 @@
 'use client'
 
 import "dotenv/config";
+import request from "@/utils/request";
+import {useState} from "react";
+import {redirect} from "next/navigation";
 
 const Login = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [username, setUsername] = useState('');
+	const [loading, setLoading] = useState(false);
+
+	const handleSignIn = async (e) => {
+		e.preventDefault();
+
+		setLoading(true);
+		const res = await request.post('/auth/login', {
+			email: email,
+			password: password,
+		});
+
+		if (res.status === 200) {
+			localStorage.setItem('user', JSON.stringify(res.data?.data));
+			redirect('/perform');
+		} else {
+			console.log('Login failed');
+		}
+	}
 	return (
 		<>
 			<section className="bg-white dark:bg-darkblack-500">
@@ -10,8 +34,8 @@ const Login = () => {
 					<div className="lg:w-1/2 px-5 xl:pl-12 pt-10">
 						<header>
 							<a href="index.html" className="">
-								<img src="/assets/images/logo/logo-color.svg" className="block dark:hidden" alt="Logo"/>
-								<img src="/assets/images/logo/logo-white.svg" className="hidden dark:block" alt="Logo"/>
+								<img src="/assets/images/Focuson_Logo.png" className="w-[150px] block dark:hidden" alt="Logo"/>
+								<img src="/assets/images/Focuson_Logo.png" className="w-[150px] hidden dark:block" alt="Logo"/>
 							</a>
 						</header>
 						<div className="max-w-[450px] m-auto pt-24 pb-16">
@@ -19,7 +43,7 @@ const Login = () => {
 								<h2
 									className="text-bgray-900 dark:text-white text-4xl font-semibold font-poppins mb-2"
 								>
-									Sign in to Bankco.
+									Sign in.
 								</h2>
 								<p className="font-urbanis text-base font-medium text-bgray-600 dark:text-bgray-50">
 									Send, spend and save smarter
@@ -89,13 +113,15 @@ const Login = () => {
 							<form action="">
 								<div className="mb-4">
 									<input
+										onChange={(e) => setEmail(e.target.value)}
 										type="text"
 										className="text-bgray-800 text-base border border-bgray-300 dark:border-darkblack-400 dark:bg-darkblack-500 dark:text-white h-14 w-full focus:border-success-300 focus:ring-0 rounded-lg px-4 py-3.5 placeholder:text-bgray-500 placeholder:text-base"
-										placeholder="Username or email"
+										placeholder="Email"
 									/>
 								</div>
 								<div className="mb-6 relative">
 									<input
+										onChange={(e) => setPassword(e.target.value)}
 										type="text"
 										className="text-bgray-800 text-base border border-bgray-300 dark:border-darkblack-400 dark:bg-darkblack-500 dark:text-white h-14 w-full focus:border-success-300 focus:ring-0 rounded-lg px-4 py-3.5 placeholder:text-bgray-500 placeholder:text-base"
 										placeholder="Password"
@@ -155,13 +181,13 @@ const Login = () => {
 										>
 									</div>
 								</div>
-								<a
-									// onClick={() => redirect('/perform')} //serverside tidak bisa handle load script
-									href={`${process.env.NEXT_PUBLIC_BASE_PATH}/perform`}
+								<button
+									onClick={handleSignIn} //serverside tidak bisa handle load script
+									// href={`${process.env.NEXT_PUBLIC_BASE_PATH}/perform`}
 									className="py-3.5 flex items-center justify-center text-white font-bold bg-success-300 hover:bg-success-400 transition-all rounded-lg w-full"
 								>
 									Sign In
-								</a>
+								</button>
 							</form>
 							<p className="text-center text-bgray-900 dark:text-bgray-50 text-base font-medium pt-7">
 								Don’t have an account?

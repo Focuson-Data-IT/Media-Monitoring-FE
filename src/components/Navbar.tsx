@@ -1,13 +1,19 @@
 'use client';
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const Navbar = () => {
 	const [isProfileVisible, setProfileVisible] = useState(false);
+	const [user, setUser] = useState(null);
 
 	const profileAction = () => {
 		setProfileVisible((prev) => !prev);
 	};
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'));
+		setUser(user);
+	}, []);
 
 	return (
 		<>
@@ -176,7 +182,7 @@ const Navbar = () => {
 								>
 									<img
 										className="object-cover"
-										src="/assets/images/avatar/profile-52x52.png"
+										src={`/assets/images/avatar/${user?.username === 'disparbud' ? 'Disbudpar.png' : 'profile-52x52-2.png'}`}
 										alt="avater"
 									/>
 								</div>
@@ -185,7 +191,7 @@ const Navbar = () => {
 										<h3
 											className="text-base font-bold leading-[28px] text-bgray-900 dark:text-white"
 										>
-											bapendabdg@focuson.com
+											{user?.email}
 										</h3>
 										<span>
                           <svg
@@ -366,12 +372,12 @@ const Navbar = () => {
 						<div>
 							<a href="/">
 								<img
-									src="/assets/images/logo/logo-color.svg"
+									src="/assets/images/Focuson_Logo.png"
 									className="block dark:hidden"
 									alt="logo"
 								/>
 								<img
-									src="/assets/images/logo/logo-white.svg"
+									src="/assets/images/Focuson_Logo.png"
 									className="hidden dark:block"
 									alt="logo"
 								/>
@@ -388,7 +394,7 @@ const Navbar = () => {
 							>
 								<img
 									className="object-cover"
-									src="/assets/images/avatar/profile-52x52.png"
+									src={`/assets/images/avatar/${user?.username === 'disparbud' ? 'Disbudpar.png' : 'profile-52x52-2.png'}`}
 									alt="avater"
 								/>
 							</div>

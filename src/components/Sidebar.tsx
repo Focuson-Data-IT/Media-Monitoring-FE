@@ -1,5 +1,13 @@
 'use client';
+import {useState} from "react";
+
 const Sidebar = () => {
+	const [isActive, setIsActive] = useState(false);
+
+	const toggleDrawer = () => {
+		setIsActive(!isActive);
+	};
+
 	return (
 		<>
 			<aside
@@ -23,7 +31,7 @@ const Sidebar = () => {
 					<button
 						type="button"
 						className="drawer-btn absolute right-0 top-auto"
-						title="Ctrl+b"
+						onClick={toggleDrawer}
 					>
 							<span>
                                 <svg width="16"

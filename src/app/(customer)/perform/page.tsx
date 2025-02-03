@@ -116,7 +116,7 @@ const Perform = () => {
 			</div>
 
 			<div className="2xl:flex 2xl:space-x-[48px] mb-5">
-				<PostsTable/>
+				<PostsTable period={parentPeriod} platform={selectedPlatform}/>
 			</div>
 		</>
 	);

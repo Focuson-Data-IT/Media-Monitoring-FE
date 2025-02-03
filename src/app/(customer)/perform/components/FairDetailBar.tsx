@@ -9,12 +9,13 @@ import OurEmptyData from "@/components/OurEmptyData";
 import {followersValueFormatter} from "@/utils/numberFormatter";
 
 const FairDetailBar: React.FC<TFairDetailBar> = ({label, description, unit, period}) => {
+	const user = JSON.parse(localStorage.getItem('user')) || null;
 	const [loading, setLoading] = useState<boolean>(true);
 	const [fairChartData, setFairChartData] = useState<any>(null);
 	const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc'); // Tambahkan state untuk urutan
 
 	const getFairChartData = async (payload: any) => {
-		const url = `/get${label}?customer_username=bapendabdg@focuson.com&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`;
+		const url = `/get${label}?kategori=${user?.username}&start_date=${moment(payload?.startDate)?.format("YYYY-MM-DD")}&end_date=${moment(payload?.endDate || payload?.startDate)?.format("YYYY-MM-DD")}`;
 		const response = await request.get(url);
 
 		const newResponse = response.data?.data?.map((v: any) => {
